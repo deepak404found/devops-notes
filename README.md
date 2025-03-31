@@ -104,7 +104,7 @@ Cloud services are typically categorized into three main models:
 
 Cloud computing has become a cornerstone of modern IT infrastructure, and several leading providers offer a wide range of services. Here are some of the most prominent cloud providers:
 
-<img src="https://github.com/deepak404found/devops-notes/blob/main/images/top-cloud-providers.jpg" alt="Top Cloud Providers" height="300" />
+<img src="https://raw.githubusercontent.com/deepak404found/devops-notes/main/images/top-cloud-providers.jpg" alt="Top Cloud Providers" height="300" />
 
 - **Amazon Web Services (AWS)**
   - The largest and most widely adopted cloud platform, offering a vast array of services.
@@ -163,7 +163,7 @@ For more information, visit the [Vercel website](https://vercel.com/).
 
 Docker is an open-source platform that enables developers to automate the deployment, scaling, and management of applications using containerization. Containers encapsulate an application and its dependencies, ensuring consistency across different environments.
 
-<img src="https://github.com/deepak404found/devops-notes/blob/main/images/docker-intro.jpeg" alt="Docker Introduction" height="400" />
+<img src="https://github.com/deepak404found/devops-notes/raw/main/images/docker-intro.jpeg" alt="Docker Introduction" height="400" />
 
 - Docker allows developers to package applications into containers, which can run on any system that has Docker installed. This eliminates the "it works on my machine" problem and simplifies the deployment process.
 - Containers are lightweight, portable, and can be easily shared across different environments, making them ideal for microservices architectures and cloud-native applications.
