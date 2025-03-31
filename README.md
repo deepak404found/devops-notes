@@ -22,7 +22,7 @@ This repository is designed to provide a comprehensive guide to DevOps practices
 
 DevOps is a set of practices that merge software development (Dev) and IT operations (Ops) to enhance collaboration, automate workflows, and improve the speed and reliability of software delivery. It focuses on continuous integration, continuous deployment (CI/CD), infrastructure as code (IaC), security, monitoring, and automation.
 
-<img src="images/devOps-steps.png" alt="DevOps Steps" height="400" />
+<img src="https://github.com/deepak404found/devops-notes/raw/main/images/devOps-steps.png" alt="DevOps Steps" height="400" />
 
 ### Why DevOps? 🤔
 
@@ -51,7 +51,7 @@ DevOps aims to:
 - It allows users to access and store data, run applications, and leverage IT resources on demand without owning physical infrastructure.
 - Cloud computing offers scalability, flexibility, and cost efficiency, making it a key enabler for modern businesses and technologies.
 
-<img src="images/cloud-computing.png" alt="Cloud Computing" height="500" />
+<img src="https://github.com/deepak404found/devops-notes/raw/main/images/cloud-computing.png" alt="Cloud Computing" height="500" />
 
 ### Key Benefits of Cloud Computing 🌍
 
