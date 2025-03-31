@@ -216,7 +216,7 @@ docker rmi <image_id>
 
 ---
 
-### Docker Compose  🏗️
+### Docker Compose 🏗️
 
 Docker Compose allows you to define multi-container applications using a YAML file.
 
