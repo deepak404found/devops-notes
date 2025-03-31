@@ -13,16 +13,16 @@ This repository is designed to provide a comprehensive guide to DevOps practices
 - Cloud Computing
   - [What is Cloud Computing?](#what-is-cloud-computing-)
   - [Key Benefits of Cloud Computing](#key-benefits-of-cloud-computing-)
-  - [Cloud Computing Service Models](#cloud-computing-service-models)
+  - [Cloud Computing Service Models](#cloud-computing-service-models-%EF%B8%8F)
   - [Cloud Deployment Models](#cloud-deployment-models-)
   - [Leading Cloud Providers](#leading-cloud-providers-)
   - [Cloud Deployment & Hosting Platforms (Vercel)](#cloud-deployment--hosting-platforms-)
 - Docker
   - [What is Docker?](#what-is-docker-)
   - [Why Use Docker?](#why-use-docker-)
-  - [Docker Architecture](#docker-architecture-)
+  - [Docker Architecture](#docker-architecture-%EF%B8%8F)
   - [Common Docker Commands](#common-docker-commands-)
-  - [Docker Compose](#docker-compose-)
+  - [Docker Compose](#docker-compose-%EF%B8%8F)
   - [Dockerfile](#dockerfile-)
   - [Docker Volumes](#docker-volumes-)
   - [Docker Networking](#docker-networking-)
@@ -216,7 +216,7 @@ docker rmi <image_id>
 
 ---
 
-### Docker Compose 🏗️
+### Docker Compose  🏗️
 
 Docker Compose allows you to define multi-container applications using a YAML file.
 
