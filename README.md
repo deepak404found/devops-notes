@@ -16,11 +16,13 @@ This repository is designed to provide a comprehensive guide to DevOps practices
   - [Cloud Computing Service Models](#cloud-computing-service-models)
   - [Cloud Deployment Models](#cloud-deployment-models-)
   - [Leading Cloud Providers](#leading-cloud-providers-)
-  - [Cloud Deployment & Hosting Platforms](#cloud-deployment--hosting-platforms-)
+  - [Cloud Deployment & Hosting Platforms (Vercel)](#cloud-deployment--hosting-platforms-)
 
 ## What is DevOps? 🚀
 
 DevOps is a set of practices that merge software development (Dev) and IT operations (Ops) to enhance collaboration, automate workflows, and improve the speed and reliability of software delivery. It focuses on continuous integration, continuous deployment (CI/CD), infrastructure as code (IaC), security, monitoring, and automation.
+
+<img src="images/devOps-steps.png" alt="DevOps Steps" height="400" />
 
 ### Why DevOps? 🤔
 
@@ -37,7 +39,7 @@ DevOps aims to:
 2. **Infrastructure as Code (IaC)**: Manages infrastructure using code for consistency, scalability, and automation.
 3. **Monitoring & Logging**: Helps track system performance and detect issues proactively.
 4. **Security (DevSecOps)**: Integrates security practices into DevOps workflows to ensure secure applications and infrastructure.
-5. **Cloud Providers (AWS, Azure, GCP)**: Provide cloud-based infrastructure and services to enhance scalability and performance.
+5. **Cloud Providers ([AWS, Azure, GCP](#leading-cloud-providers-))**: Provide cloud-based infrastructure and services to enhance scalability and performance.
 
 ---
 
@@ -49,6 +51,8 @@ DevOps aims to:
 - It allows users to access and store data, run applications, and leverage IT resources on demand without owning physical infrastructure.
 - Cloud computing offers scalability, flexibility, and cost efficiency, making it a key enabler for modern businesses and technologies.
 
+<img src="images/cloud-computing.png" alt="Cloud Computing" height="500" />
+
 ### Key Benefits of Cloud Computing 🌍
 
 - **Scalability**: Easily scale resources up or down as needed.
@@ -57,21 +61,21 @@ DevOps aims to:
 - **Security**: Cloud providers implement strong security measures to protect data.
 - **Disaster Recovery**: Cloud-based backups ensure quick recovery from failures.
 
-## Cloud Computing Service Models ☁️
+## Cloud Computing Service Models 🛠️
 
 Cloud services are typically categorized into three main models:
 
-1. **Infrastructure as a Service (IaaS)** 🏗️
+1. **Infrastructure as a Service (IaaS)** 🏠
 
    - Provides virtualized computing resources over the internet.
-   - Examples: Amazon EC2, Google Compute Engine, Microsoft Azure VMs.
+   - Examples: Amazon EC2, Google Compute Engine, Microsoft Azure VMs (see [Leading Cloud Providers](#leading-cloud-providers-)).
 
 2. **Platform as a Service (PaaS)** 🛠️
 
    - Offers a platform for developing, running, and managing applications.
-   - Examples: Google App Engine, AWS Elastic Beanstalk, Azure App Services.
+   - Examples: Google App Engine, AWS Elastic Beanstalk, Azure App Services (see [Leading Cloud Providers](#leading-cloud-providers-)).
 
-3. **Software as a Service (SaaS)** 💻
+3. **Software as a Service (SaaS)** 🖥️
 
    - Delivers software applications over the internet on a subscription basis.
    - Examples: Google Workspace, Dropbox, Salesforce.
@@ -86,10 +90,35 @@ Cloud services are typically categorized into three main models:
 ## Leading Cloud Providers 🔥
 
 - **Amazon Web Services (AWS)**
+  - The largest and most widely adopted cloud platform, offering a vast array of services.
+  - Includes IaaS, PaaS, and SaaS solutions.
+  - Popular services: EC2, S3, Lambda, RDS, and more.
+  - [Learn more about AWS](https://aws.amazon.com/)
+  - [Documentation](https://docs.aws.amazon.com/)
 - **Microsoft Azure**
+  - A comprehensive cloud platform with a wide range of services.
+  - Supports various programming languages and frameworks.
+  - Popular services: Azure VMs, Azure Functions, Azure SQL Database, and more.
+  - [Learn more about Azure](https://azure.microsoft.com/)
+  - [Documentation](https://docs.microsoft.com/en-us/azure/)
 - **Google Cloud Platform (GCP)**
+  - A suite of cloud computing services that runs on the same infrastructure as Google’s end-user products.
+  - Offers IaaS, PaaS, and serverless computing.
+  - Popular services: Google Compute Engine, Google Kubernetes Engine, BigQuery, and more.
+  - [Learn more about GCP](https://cloud.google.com/)
+  - [Documentation](https://cloud.google.com/docs)
 - **IBM Cloud**
+  - Offers a range of cloud computing services, including IaaS, PaaS, and SaaS.
+  - Focuses on enterprise solutions and hybrid cloud deployments.
+  - Popular services: IBM Cloud Kubernetes Service, IBM Cloud Functions, and more.
+  - [Learn more about IBM Cloud](https://www.ibm.com/cloud)
+  - [Documentation](https://cloud.ibm.com/docs)
 - **Oracle Cloud**
+  - Provides a comprehensive suite of cloud services, including IaaS, PaaS, and SaaS.
+  - Focuses on enterprise applications and databases.
+  - Popular services: Oracle Cloud Infrastructure, Oracle Autonomous Database, and more.
+  - [Learn more about Oracle Cloud](https://www.oracle.com/cloud/)
+  - [Documentation](https://docs.oracle.com/en/cloud/)
 
 ## Cloud Deployment & Hosting Platforms 🌍
 
@@ -108,12 +137,3 @@ Vercel is a cloud platform for deploying and hosting frontend applications, part
 ## Conclusion 🎯
 
 Cloud computing has revolutionized the IT industry by offering scalable, cost-effective, and flexible computing solutions. Understanding cloud services and deployment models is crucial for modern DevOps practices.
-
-## Additional Resources 📚
-
-- [AWS Documentation](https://aws.amazon.com/documentation/)
-- [GCP Documentation](https://cloud.google.com/docs)
-- [Azure Documentation](https://docs.microsoft.com/en-us/azure/)
-- [Vercel Documentation](https://vercel.com/docs)
-
-➡️ Next: Explore Cloud Computing Setup & Commands [here](./setup.md)
