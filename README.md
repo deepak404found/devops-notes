@@ -16,6 +16,7 @@ This repository is designed to provide a comprehensive guide to DevOps practices
   - [Cloud Computing Service Models](#cloud-computing-service-models-%EF%B8%8F)
   - [Cloud Deployment Models](#cloud-deployment-models-)
   - [Leading Cloud Providers](#leading-cloud-providers-)
+  - [Most Commonly Used Cloud Services by category](#most-commonly-used-cloud-services-by-category-%EF%B8%8F)
   - [Cloud Deployment & Hosting Platforms (Vercel)](#cloud-deployment--hosting-platforms-)
 - Docker
   - [What is Docker?](#what-is-docker-)
@@ -136,6 +137,26 @@ Cloud computing has become a cornerstone of modern IT infrastructure, and severa
   - Popular services: Oracle Cloud Infrastructure, Oracle Autonomous Database, and more.
   - [Learn more about Oracle Cloud](https://www.oracle.com/cloud/)
   - [Documentation](https://docs.oracle.com/en/cloud/)
+
+---
+
+### Most Commonly Used Cloud Services by category 🔧☁️
+
+- **Virtual Machine** 🖥️ => AWS EC2, Google Compute Engine (GCE), Azure VMs
+- **Serverless** ⚡ => AWS Lambda, Google Cloud Functions, Azure Functions, Vercel, Netlify
+- **Load Balancer** ⚖️ => AWS ELB, Cloud Load Balancing, Nginx Proxy
+- **Object Storage** 📦 => AWS S3, Google Cloud Storage, Minio, Cloudflare R2
+- **Database Services** 🗄️ => Cloud SQL, Cassandra, MongoDB, etc.
+- **Container Registry** 📥 => AWS ECR, Docker Hub, etc.
+- **Container Service** 🐳 => AWS ECS, Google Cloud Run, Azure AKS
+- **Kubernetes** ☸️ => AWS EKS, Google GKE, Azure AKS
+- **Cache** ⚡ => AWS ElastiCache, Redis, Memorystore, Memcached
+- **Content Delivery Network (CDN)** 🌍 => Amazon CloudFront, BunnyCDN
+- **DNS Server** 🌐 => Cloudflare, Route 53, Google Cloud DNS, Azure Traffic Manager
+- **Identity Management** 🔐 => AWS IAM, Google IAM, Azure Active Directory
+- **Event Streaming & PubSub** 📡 => Kafka, RabbitMQ, Redis PubSub, etc.
+- **Networking** 🔌 => AWS VPC, Google VPC, Azure VNET (those who hate life use Netmaker 😂)
+- **Code Build** 🏗️ => AWS CodeBuild, Google Cloud Build, Azure Pipelines, Jenkins
 
 ---
 
