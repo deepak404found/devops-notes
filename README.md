@@ -27,12 +27,17 @@ This repository is designed to provide a comprehensive guide to DevOps practices
   - [Dockerfile](#dockerfile-)
   - [Docker Volumes](#docker-volumes-)
   - [Docker Networking](#docker-networking-)
+- CI/CD
+  - [Continuous Integration (CI)](#continuous-integration-ci-)
+  - [Continuous Deployment (CD)](#continuous-deployment-cd-)
+  - [CI/CD Pipeline (Full Process)](#cicd-pipeline-full-process-)
+  - [Popular CI/CD Tools](#popular-cicd-tools-%EF%B8%8F)
 
 ## What is DevOps? 🚀
 
 DevOps is a set of practices that merge software development (Dev) and IT operations (Ops) to enhance collaboration, automate workflows, and improve the speed and reliability of software delivery. It focuses on continuous integration, continuous deployment (CI/CD), infrastructure as code (IaC), security, monitoring, and automation.
 
-<img src="https://github.com/deepak404found/devops-notes/raw/main/images/devOps-steps.png" alt="DevOps Steps" height="400" />
+![devops-steps](https://github.com/deepak404found/devops-notes/raw/main/images/devOps-steps.png)
 
 ### Why DevOps? 🤔
 
@@ -61,7 +66,7 @@ DevOps aims to:
 - It allows users to access and store data, run applications, and leverage IT resources on demand without owning physical infrastructure.
 - Cloud computing offers scalability, flexibility, and cost efficiency, making it a key enabler for modern businesses and technologies.
 
-<img src="https://github.com/deepak404found/devops-notes/raw/main/images/cloud-computing.png" alt="Cloud Computing" height="500" />
+![cloud-computing](https://github.com/deepak404found/devops-notes/raw/main/images/cloud-computing.png)
 
 ### Key Benefits of Cloud Computing 🌍
 
@@ -105,7 +110,7 @@ Cloud services are typically categorized into three main models:
 
 Cloud computing has become a cornerstone of modern IT infrastructure, and several leading providers offer a wide range of services. Here are some of the most prominent cloud providers:
 
-<img src="https://raw.githubusercontent.com/deepak404found/devops-notes/main/images/top-cloud-providers.jpg" alt="Top Cloud Providers" height="300" />
+![Top Cloud Providers](https://raw.githubusercontent.com/deepak404found/devops-notes/main/images/top-cloud-providers.jpg)
 
 - **Amazon Web Services (AWS)**
   - The largest and most widely adopted cloud platform, offering a vast array of services.
@@ -184,7 +189,7 @@ For more information, visit the [Vercel website](https://vercel.com/).
 
 Docker is an open-source platform that enables developers to automate the deployment, scaling, and management of applications using containerization. Containers encapsulate an application and its dependencies, ensuring consistency across different environments.
 
-<img src="https://github.com/deepak404found/devops-notes/raw/main/images/docker-intro.jpeg" alt="Docker Introduction" height="400" />
+![docker-intro](https://github.com/deepak404found/devops-notes/raw/main/images/docker-intro.jpeg)
 
 - Docker allows developers to package applications into containers, which can run on any system that has Docker installed. This eliminates the "it works on my machine" problem and simplifies the deployment process.
 - Containers are lightweight, portable, and can be easily shared across different environments, making them ideal for microservices architectures and cloud-native applications.
@@ -332,6 +337,86 @@ Docker provides several networking options:
 - **Bridge**: Default network mode; containers can communicate with each other.
 - **Host**: Shares the host network stack.
 - **Overlay**: Used in Docker Swarm for multi-host networking.
+
+---
+
+## 3. CI/CD 🔧
+
+### Continuous Integration (CI) 🤖
+
+Continuous Integration (CI) is a software development practice where developers frequently integrate their code changes into a shared repository. Each integration is verified by an automated build and testing process, allowing teams to detect and fix issues early in the development cycle.
+
+🔹 CI Workflow:
+
+1. Developers commit code changes to a shared repository (e.g., Git).
+2. CI server (e.g., Jenkins, Travis CI) automatically triggers a build.
+3. The build process compiles the code, runs tests, and generates artifacts.
+4. If the build and tests pass, the code is merged into the main branch.
+5. If the build or tests fail, developers are notified to fix the issues.
+6. CI tools provide feedback on the build status, test results, and code quality.
+7. Developers can review and address issues before deploying to production.
+8. Once the code is stable, it can be deployed to production or staging environments.
+
+---
+
+### Continuous Deployment (CD) 🚀
+
+Continuous Deployment (CD) is an extension of Continuous Integration that automates the deployment of code changes to production environments. It ensures that every code change that passes the CI process is automatically deployed to production, reducing the time between development and release.
+
+🔹 CD Workflow:
+
+1. CI process completes successfully, and code changes are merged into the main branch.
+2. CD server (e.g., Jenkins, GitLab CI/CD) automatically triggers a deployment process.
+3. The deployment process may include building Docker images, running tests, and deploying to staging or production environments.
+4. Automated tests are run in the production environment to ensure the application is functioning correctly.
+5. If all tests pass, the code is considered safe for production.
+6. Monitoring tools (e.g., Prometheus, Grafana) track application performance and health.
+7. If issues are detected, rollback mechanisms can revert to the previous stable version.
+8. Continuous feedback loops provide insights into application performance and user experience.
+9. Developers can monitor deployment status and receive notifications for any issues.
+10. Continuous Deployment allows for rapid iterations and faster delivery of new features to users.
+
+---
+
+### CI/CD Pipeline (Full Process) 🔄
+
+The following diagram represents a typical CI/CD pipeline:
+
+![CI/CD Pipeline](https://github.com/deepak404found/devops-notes/blob/main/images/cicd-pipeline.png?raw=true)
+
+### Explanation
+
+1. **Code Development**: Developers push code changes to a version control system like GitHub.
+2. **Static Code Analysis**: Tools analyze the code for errors and vulnerabilities.
+3. **Build Triggers**: A CI tool like Jenkins detects the new changes and triggers the build process.
+4. **Build Execution**: The CI system compiles the code and creates build artifacts.
+5. **Testing**: Automated tests are executed to ensure the code functions correctly.
+6. **Artifact Storage**: Build artifacts are stored in repositories like JFrog or Nexus.
+7. **Deployment Preparation**: The application is packaged and prepared for deployment.
+8. **Staging & Testing**: The application is deployed to a staging environment for further validation.
+9. **Deployment Testing**: If all tests pass, the application proceeds to production.
+10. **Continuous Deployment**: The final step where the application is deployed to the live environment.
+
+This automated approach enhances efficiency, reduces manual errors, and accelerates software delivery cycles.
+
+---
+
+### Popular CI/CD Tools 🛠️
+
+Several CI/CD tools are available to automate the software development process. Here are some of the most popular ones:
+
+| Tool | Description |
+|------|-------------|
+| Jenkins | Open-source automation server for building, testing, and deploying applications. |
+| GitLab CI/CD | Built-in CI/CD tool for GitLab repositories, providing seamless integration. |
+| Travis CI | Continuous integration service for GitHub projects, automating builds and tests. |
+| CircleCI | Cloud-based CI/CD platform that automates the software development process. |
+| GitHub Actions | CI/CD feature integrated into GitHub, allowing automation of workflows. |
+| Azure DevOps | Microsoft’s suite of development tools for CI/CD, project management, and collaboration. |
+| AWS CodePipeline | Fully managed CI/CD service for automating application releases on AWS. |
+| Google Cloud Build | Fully managed CI/CD service for building, testing, and deploying applications on GCP. |
+| Bitbucket Pipelines | Integrated CI/CD service for Bitbucket repositories, automating builds and deployments. |
+| Codeship | Cloud-based CI/CD platform for building, testing, and deploying applications. |
 
 ---
 
