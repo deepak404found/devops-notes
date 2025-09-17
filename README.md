@@ -32,6 +32,8 @@ This repository is designed to provide a comprehensive guide to DevOps practices
   - [Continuous Deployment (CD)](#continuous-deployment-cd-)
   - [CI/CD Pipeline (Full Process)](#cicd-pipeline-full-process-)
   - [Popular CI/CD Tools](#popular-cicd-tools-%EF%B8%8F)
+- AWS
+  - [AWS Notes](https://github.com/deepak404found/devops-notes/blob/main/cloud_aws.md)
 
 ## What is DevOps? 🚀
 
