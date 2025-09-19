@@ -1,5 +1,102 @@
 # 📘 Cloud Computing & AWS Notes (Detailed Beginner-Friendly)
 
+## Welcome to AWS Learning Journey! 🌟
+
+This comprehensive guide covers everything from cloud computing fundamentals to advanced AWS services. Whether you're a complete beginner or looking to deepen your AWS knowledge, you'll find detailed explanations, hands-on demos, and real-world examples to accelerate your learning.
+
+## 📚 Table of Contents
+
+### 🌐 Cloud Computing Fundamentals
+- [Introduction to Cloud Computing](#-introduction-to-cloud-computing---complete-beginner-guide)
+- [Cloud Service Models](#-cloud-service-models)
+- [Cloud Deployment Models](#-cloud-deployment-models)
+- [AWS Overview](#-aws-overview)
+
+### 🔐 AWS Identity and Access Management (IAM)
+- [IAM Core Components](#-iam-core-components-explained)
+- [IAM Security Best Practices](#-iam-security-best-practices-detailed)
+- [IAM Policy Types](#-iam-policy-types-explained)
+- [IAM Troubleshooting](#-iam-troubleshooting-common-issues)
+- [IAM Monitoring and Auditing](#-iam-monitoring-and-auditing)
+- [Real-World IAM Scenarios](#-real-world-iam-scenarios)
+
+### 🖥 Amazon EC2 (Elastic Compute Cloud)
+- [EC2 Core Concepts](#-ec2-core-concepts-explained)
+- [Instance Types](#-instance-type-categories-detailed)
+- [EC2 Launch & Management](#-ec2-instance-launch--management)
+- [EC2 Pricing & Cost Management](#-ec2-pricing--cost-management)
+- [Step-by-Step EC2 Launch Guide](#-ec2-instance-launch---complete-step-by-step-guide)
+- [Common Issues and Solutions](#-common-issues-and-solutions)
+
+### 🔑 SSH Connection & Server Management
+- [SSH Setup for Different OS](#-ssh-setup-for-different-operating-systems)
+- [Step-by-Step SSH Connection](#-step-by-step-ssh-connection-process)
+- [SSH Security Best Practices](#-ssh-security-best-practices)
+- [File Transfer with SSH](#-file-transfer-with-ssh)
+- [SSH Tips for Beginners](#-ssh-tips-for-beginners)
+
+### 🕸 Web Server Setup (Nginx)
+- [Nginx Setup Guide](#-nginx-setup---complete-beginner-guide)
+- [Nginx Configuration](#-nginx-configuration-explained)
+- [Step-by-Step Nginx Setup](#-step-by-step-nginx-setup-for-django)
+- [SSL/HTTPS Setup](#-sslhttps-setup-with-lets-encrypt)
+- [Nginx Performance Optimization](#-nginx-performance-optimization)
+- [Nginx Best Practices](#-nginx-best-practices)
+
+### 🖥 Django Development
+- [Django Local Setup](#-django-local-setup-with-pip-beginner-friendly)
+- [Step-by-Step Django Setup](#-step-by-step-django-setup)
+- [IDE Setup for Windows](#-ide-setup-for-windows-users)
+- [Common Issues & Solutions](#-common-issues--solutions)
+- [Understanding Django Project Structure](#-understanding-your-django-project-structure)
+
+### 🌍 Networking & Cost Optimization
+- [Networking Basics](#-networking-basics-for-servers-complete-beginner-guide)
+- [AWS Cost Optimization](#-aws-cost-optimization-save-money)
+- [Cost Optimization Strategies](#-cost-optimization-strategies)
+- [Real-World Cost Examples](#-real-world-cost-examples)
+
+### 🗄 AWS Storage Services
+- [Amazon S3 (Simple Storage Service)](#-amazon-s3-simple-storage-service)
+- [S3 Versioning](#-amazon-s3-versioning)
+- [Amazon CloudFront (CDN)](#-amazon-cloudfront-content-delivery-network)
+- [S3 vs CloudFront Relationship](#-s3-vs-cloudfront-and-their-relationship)
+- [Amazon EBS (Elastic Block Store)](#-amazon-ebs-elastic-block-store)
+
+### 🗃 AWS Database Services
+- [Amazon RDS (Relational Database Service)](#-amazon-rds-relational-database-service)
+- [RDS Demo: Connect to Django](#-demo-connect-rds-postgresqlmysql-to-django-on-ec2)
+- [RDS Read Replicas](#-rds-read-replicas---scaling-database-performance)
+- [Amazon DynamoDB (NoSQL Database)](#-amazon-dynamodb-nosql-database)
+- [DynamoDB vs RDS](#-dynamodb-vs-rds-network-setup-point-of-view)
+- [Amazon ElastiCache (In-Memory Caching)](#-amazon-elasticache-in-memory-caching)
+
+### 🔒 AWS Security Best Practices
+- [IAM Deep Dive](#-identity-and-access-management-iam-deep-dive)
+- [Data Encryption](#-data-encryption)
+- [Security Monitoring](#-security-monitoring)
+
+### 🚀 AWS Compute Services (Beyond EC2)
+- [AWS Lambda (Serverless Computing)](#-aws-lambda-serverless-computing)
+- [AWS Elastic Beanstalk (Platform as a Service)](#-aws-elastic-beanstalk-platform-as-a-service)
+
+### 🌐 AWS Networking Services
+- [Amazon VPC (Virtual Private Cloud)](#-amazon-vpc-virtual-private-cloud)
+- [Amazon Route 53 (DNS Service)](#-amazon-route-53-dns-service)
+
+### 🛠 Hands-On Projects
+- [Beginner Projects](#-beginner-projects)
+- [Intermediate Projects](#-intermediate-projects)
+
+### 📚 Learning Paths & Resources
+- [Beginner Learning Path](#-beginner-learning-path-0-3-months)
+- [Intermediate Learning Path](#-intermediate-learning-path-3-6-months)
+- [Advanced Learning Path](#-advanced-learning-path-6-months)
+- [Troubleshooting Common Issues](#-troubleshooting-common-issues)
+- [Additional Resources](#-additional-resources-and-references)
+
+---
+
 ## 🌐 Introduction to Cloud Computing - Complete Beginner Guide
 
 **What is Cloud Computing?** → Cloud computing is like renting a computer, storage, and software over the internet instead of buying and maintaining your own. Think of it as the difference between owning a car versus using Uber - you get the same result (transportation) but without the hassle of maintenance, insurance, and parking.
@@ -3014,6 +3111,60 @@ Each file is called an **object**, and it is stored inside a **bucket**.
 - **Cost:** Additional $0.04 per GB transferred
 - **Endpoint:** `bucket-name.s3-accelerate.amazonaws.com`
 
+### 📌 Amazon S3 Versioning
+
+#### 🌐 What is Versioning?
+
+Versioning in S3 allows you to keep multiple versions of the same object in a bucket.
+
+Every time you upload an object with the same key (file name), S3 creates a new version, instead of replacing the old one.
+
+This helps in:
+
+- Protecting against accidental overwrites
+- Recovering from accidental deletions
+
+👉 **Analogy:** Think of it like Google Docs history → you can roll back to older versions anytime.
+
+#### 🔑 Key Points
+
+- **Disabled by default** → you must enable versioning on a bucket
+- **Once enabled, you cannot disable, only suspend**
+- Each object will have a **Version ID** (unique string)
+- You can:
+  - View old versions
+  - Restore an old version
+  - Permanently delete specific versions
+
+#### ⚖️ Delete Behavior with Versioning
+
+- **Without Versioning** → Delete = object gone
+- **With Versioning** → Delete creates a **Delete Marker** (latest version), but old versions are still in the bucket
+- You can remove the delete marker to restore the object
+
+#### 📝 Example Scenario
+
+1. Create a bucket → Enable Versioning
+2. Upload `index.html`
+   - Version ID = `1111`
+3. Upload a new file with the same name (`index.html`)
+   - Version ID = `2222`
+4. Now two versions exist → latest is served by default
+5. Accidentally delete the file → creates a delete marker
+6. Object seems gone
+7. But you can restore older version (`1111` or `2222`)
+
+#### 🎯 Use Cases
+
+- **Accidental overwrite:** Upload wrong file → roll back to previous version
+- **Accidental delete:** File deleted → remove delete marker to restore
+- **Data protection:** Keep history of changes in critical files (code, configs, logs)
+
+#### ⚠️ Costs
+
+- You pay for **all versions stored**
+- **Example:** If you upload a 5MB file 10 times, you'll pay for 50MB storage (10 versions)
+
 #### S3 Object Lambda
 - **What:** Transform data on-the-fly using Lambda functions
 - **Use Cases:** Image resizing, data filtering, format conversion
@@ -3251,6 +3402,283 @@ Glacier Deep Archive: $0.02 per GB
 - **Use S3 Access Analyzer** for security insights
 - **Monitor request patterns** for optimization opportunities
 - **Regular cost reviews** with AWS Cost Explorer
+
+## ⚡ Amazon CloudFront (Content Delivery Network)
+
+### 📋 Table of Contents
+
+- [Introduction to CDN](#-introduction-to-cdn)
+- [What is Amazon CloudFront?](#-what-is-amazon-cloudfront)
+- [Key Concepts](#-key-concepts)
+- [Use Cases](#-use-cases)
+- [Origin Access Control (OAC)](#-origin-access-control-oac)
+- [Hands-On Demo: S3 + CloudFront Setup](#-hands-on-demo-s3--cloudfront-setup)
+- [Advantages](#-advantages)
+- [CloudFront Pricing](#-cloudfront-pricing)
+- [S3 vs CloudFront and Their Relationship](#-s3-vs-cloudfront-and-their-relationship)
+
+### 🌟 Brief Overview
+
+Amazon CloudFront is AWS's global Content Delivery Network (CDN) service that delivers content to users with low latency by caching it at edge locations worldwide. It works seamlessly with S3, EC2, and other AWS services to provide fast, secure, and cost-effective content delivery.
+
+**Key Benefits:**
+- **Global Performance:** 400+ edge locations worldwide
+- **Security:** Built-in DDoS protection and SSL/TLS
+- **Cost Optimization:** Reduces load on origin servers
+- **Easy Integration:** Works with S3, EC2, and external origins
+- **Pay-as-you-go:** Only pay for what you use
+
+### 🌐 Introduction to CDN
+
+#### What is a CDN? (Content Delivery Network)
+
+A CDN is a network of distributed servers that deliver web content to users based on their geographic location.
+
+#### Why do we need it?
+
+- **Low latency:** Content served from locations closer to users
+- **Faster content delivery:** Reduces load times significantly
+- **Global reach:** Consistent performance worldwide
+- **Reduced server load:** Offloads traffic from origin servers
+
+#### Real-life examples
+
+- **Netflix streaming:** Video content cached globally
+- **E-commerce images:** Product photos delivered quickly
+- **News portals:** Articles and media cached worldwide
+
+### 🌍 What is Amazon CloudFront?
+
+Amazon CloudFront is AWS's global CDN service that:
+
+- Delivers content (static, dynamic, video, APIs) with low latency
+- Uses **Edge Locations** (close to end-users)
+- Works with S3, EC2, or even non-AWS servers
+- Provides built-in security features
+
+### 🔑 Key Concepts
+
+#### Origin
+- **What:** Where content lives (S3 bucket, EC2, or external server)
+- **Types:** S3 buckets, EC2 instances, Load Balancers, Custom origins
+
+#### Distribution
+- **What:** The CDN configuration
+- **Types:** Web distribution (HTTP/HTTPS), RTMP distribution (streaming)
+
+#### Edge Location
+- **What:** AWS locations worldwide where content is cached
+- **Coverage:** 400+ edge locations globally
+- **Purpose:** Store cached content closer to users
+
+#### TTL (Time-to-Live)
+- **What:** How long objects stay cached
+- **Default:** 24 hours
+- **Customizable:** Per file type or path
+
+#### Invalidation
+- **What:** Clearing cached files when updated
+- **Use case:** Force immediate content updates
+- **Cost:** First 1,000 invalidations per month are free
+
+### 🎯 Use Cases
+
+- **Hosting static website** with S3 + CloudFront
+- **Video streaming** with low latency
+- **Securing APIs** with low latency
+- **Reducing EC2/S3 cost** by caching
+- **Global content delivery** for applications
+
+### 🔒 Origin Access Control (OAC)
+
+#### What is OAC?
+
+OAC = A secure way for CloudFront to access your private S3 bucket.
+
+Before OAC, we used OAI (Origin Access Identity), but OAC is the new recommended method (2022+).
+
+With OAC, CloudFront signs each request it makes to your S3 bucket using SigV4 (AWS signature).
+
+#### ❌ Problem Without OAC
+
+If you make your S3 bucket public, anyone on the internet can directly access your objects (security risk).
+
+**Example:**
+- CloudFront URL: `d123.cloudfront.net/index.html` ✅
+- But also: `my-bucket.s3.amazonaws.com/index.html` ❌ (public exposure)
+
+#### ✅ Solution with OAC
+
+1. Keep S3 private (block public access = ON)
+2. Create an OAC in CloudFront
+3. OAC will be the only entity allowed to fetch objects from the bucket
+4. You attach a bucket policy that says: "Allow only CloudFront (via OAC) to get objects"
+
+**Result:**
+- CloudFront → ✅ Accesses S3 securely
+- Direct S3 URL → ❌ Blocked
+
+#### 📝 Example Bucket Policy with OAC
+
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Principal": {
+        "Service": "cloudfront.amazonaws.com"
+      },
+      "Action": "s3:GetObject",
+      "Resource": "arn:aws:s3:::my-demo-bucket/*",
+      "Condition": {
+        "StringEquals": {
+          "AWS:SourceArn": "arn:aws:cloudfront::123456789012:distribution/EDFDVBD632BHDS5"
+        }
+      }
+    }
+  ]
+}
+```
+
+### 🛠 Hands-On Demo: S3 + CloudFront Setup
+
+#### 1️⃣ Prepare S3 Bucket (Origin)
+
+1. Go to S3 Console → Create Bucket
+2. Name: `my-demo-site-bucket-001`
+3. Region: `ap-south-1` (Mumbai)
+4. Keep "Block all public access" enabled (we'll use CloudFront for public access)
+5. Upload your static website files (e.g., `index.html`, `style.css`, `logo.png`)
+6. Note down the S3 bucket name (will be used as origin)
+
+👉 **Explain:** "This is just storage, not yet a website."
+
+#### 2️⃣ Enable Static Website Hosting (Optional Check)
+
+If you want, show that S3 can serve files directly:
+
+1. Go to Properties → Static website hosting → Enable
+2. Set `index.html` as root file
+3. Get the S3 Website Endpoint: `http://my-demo-site-bucket-001.s3-website.ap-south-1.amazonaws.com`
+
+👉 **Show it works but is slow and regional** → this motivates using CloudFront
+
+#### 3️⃣ Create CloudFront Distribution
+
+1. Go to CloudFront Console → Create Distribution
+2. **Origin:**
+   - Choose S3 bucket as origin
+   - Keep "Restrict Bucket Access = Yes" (so S3 only allows CloudFront to fetch)
+   - CloudFront will create an Origin Access Control (OAC)
+3. **Default Cache Behavior:**
+   - Viewer protocol policy = Redirect HTTP to HTTPS
+   - Allowed methods = GET, HEAD (for static site)
+4. **Settings:**
+   - Leave defaults, create distribution
+
+👉 **Explain:** "Now CloudFront sits between users and S3."
+
+#### 4️⃣ Test CloudFront Distribution
+
+After ~5–10 minutes, you'll get a CloudFront domain:
+`d123exampleabc.cloudfront.net`
+
+Open it in the browser → your website loads from nearest edge location.
+
+👉 **Highlight the difference:** faster, secure, global
+
+#### 5️⃣ Optional Enhancements (If Time)
+
+**Cache Invalidation:**
+1. Update `index.html` in S3
+2. Show that CloudFront still serves the old version
+3. Create Invalidation in CloudFront → now new version is served
+4. Explain: "This is how caching works."
+
+**Custom Domain (if available):**
+1. Map your domain (via Route 53 or external DNS) to CloudFront
+2. Add SSL certificate via ACM
+
+### ✅ Advantages
+
+- **Faster global performance:** Content served from edge locations
+- **Reduces load on origin servers:** Caching reduces direct requests
+- **Built-in security:** DDoS protection with AWS Shield, SSL/TLS
+- **Pay as you go:** Only pay for what you use
+- **Easy integration:** Works seamlessly with other AWS services
+
+### 💰 CloudFront Pricing
+
+- **Data Transfer Out:** $0.085 per GB (first 10TB)
+- **Requests:** $0.0075 per 10,000 requests
+- **Free Tier:** 1TB data transfer, 10 million requests
+
+## 📌 S3 vs CloudFront and Their Relationship
+
+### 🪣 Amazon S3 (Simple Storage Service)
+
+#### What it is
+A storage service.
+
+#### Use
+Store files (HTML, images, PDFs, backups, videos, etc.).
+
+#### Access
+You can access files directly via an S3 bucket URL.
+
+#### Limitation
+- Files are served from one AWS region only → if a user is far from that region, it's slow
+- Doesn't provide caching → every request goes to S3
+
+👉 **Think of S3 like a warehouse where you keep all your goods. If someone far away orders, delivery takes time.**
+
+### 🌍 Amazon CloudFront (CDN)
+
+#### What it is
+A Content Delivery Network (CDN).
+
+#### Use
+Distributes your S3 content (or EC2 content) globally by caching it at Edge Locations (close to users).
+
+#### Access
+Instead of accessing `bucket.s3.amazonaws.com`, users access `d123xyz.cloudfront.net`.
+
+#### Advantages
+- **Faster delivery** (low latency)
+- **Reduces cost** by caching → fewer direct requests to S3
+- **Provides SSL** (HTTPS) easily
+- **DDoS protection**
+
+👉 **Think of CloudFront like Amazon delivery hubs placed all around the world. Instead of shipping from the main warehouse every time (S3), users get the product from the nearest hub (CloudFront edge).**
+
+### 🔗 Relationship (How They Work Together)
+
+1. **S3 stores the files** (origin)
+2. **CloudFront caches those files** at multiple edge locations
+3. **When a user requests a file:**
+   - CloudFront checks if it's cached → delivers immediately
+   - If not cached, it fetches from S3 → caches it → then delivers
+
+### ⚖️ S3 vs CloudFront — Quick Comparison
+
+| Feature | S3 | CloudFront |
+|---------|----|-----------| 
+| **Purpose** | Store objects (files) | Deliver content globally (CDN) |
+| **Performance** | Single-region delivery | Global low-latency via edge caches |
+| **Security** | IAM policies, bucket policy | SSL/TLS, AWS Shield (DDoS protection) |
+| **Cost** | Pay per storage + request | Pay for data transfer + cache hits |
+| **Use Case** | Backups, data storage, logs | Websites, APIs, video streaming |
+
+### ✅ Real-Life Example
+
+1. You upload a static website (HTML, CSS, JS) to S3
+2. **Without CloudFront** → a user in India fetching from US-East-1 bucket may face delay
+3. **With CloudFront** → the site is cached in an edge location (Mumbai, Singapore, etc.), so the user gets it instantly
+
+👉 **Summary:**
+- **S3** = where data lives
+- **CloudFront** = how data is delivered faster worldwide
 ## 💾 Amazon EBS (Elastic Block Store)
 
 ![EBS Volume Types](https://cdn.educba.com/academy/wp-content/uploads/2019/10/setup-image-1.png)
@@ -4586,28 +5014,6 @@ def lambda_handler(event, context):
 - **Hosted Zone:** $0.50 per month
 - **Queries:** $0.40 per million queries
 - **Health Checks:** $0.50 per health check per month
-## ⚡ Amazon CloudFront (Content Delivery Network)
-
-**What is CloudFront?** → Global CDN that delivers content to users with low latency.
-
-
-### CloudFront Benefits:
-
-- **Global Edge Locations:** 400+ locations worldwide
-- **Fast Content Delivery:** Cached content closer to users
-- **DDoS Protection:** Built-in protection
-- **HTTPS:** Secure content delivery
-### CloudFront Use Cases:
-
-- **Static Websites:** HTML, CSS, JavaScript
-- **Media Streaming:** Videos, images
-- **API Acceleration:** Faster API responses
-- **Software Downloads:** Large files
-### CloudFront Pricing:
-
-- **Data Transfer Out:** $0.085 per GB (first 10TB)
-- **Requests:** $0.0075 per 10,000 requests
-- **Free Tier:** 1TB data transfer, 10 million requests
 # 🛠 Hands-On Exercises and Projects
 
 ## 🎯 Beginner Projects
