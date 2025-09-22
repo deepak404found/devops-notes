@@ -4905,9 +4905,567 @@ with table.batch_writer() as batch:
 - **Cost:** $0.50 per GB of data analyzed
 # 🚀 AWS Compute Services (Beyond EC2)
 
-## ⚡ AWS Lambda (Serverless Computing)
+## ⚡ AWS Lambda (Serverless Computing) - Complete Guide
 
 **What is Lambda?** → Run code without managing servers. You just upload your code and AWS handles everything else.
+
+![AWS Lambda Architecture Overview](https://docs.aws.amazon.com/images/lambda/latest/dg/images/architecture.png)
+
+*Figure: AWS Lambda Serverless Architecture - Event-driven execution model*
+
+### 🔑 Key AWS Concepts (Serverless & Lambda)
+
+**Serverless** → No server management, just code.
+
+**Lambda Function** → Piece of code that runs only when triggered.
+
+**Event** → Input data that triggers Lambda (S3 upload, API call, DynamoDB update, etc).
+
+**Context** → Metadata (request ID, timeout, memory, etc).
+
+**API Gateway** → Exposes Lambda as HTTP endpoints.
+
+**IAM Role** → Permissions for Lambda to access other AWS services.
+
+### ❄️ Cold Start vs Hot Start
+
+**Cold Start** → First run after Lambda is idle or new version deployed. Takes more time (init + container boot).
+
+**Hot Start** → When Lambda container is already warm → much faster execution.
+
+**Performance Impact:**
+- **Cold Start:** 100ms - 10s (depending on runtime and memory)
+- **Hot Start:** 1-50ms
+- **Factors affecting cold start:** Runtime language, memory allocation, dependencies, VPC configuration
+
+### 🛠️ Demo Flow for Students (Increasing Complexity)
+
+![Lambda CRUD Functions Architecture](https://docs.aws.amazon.com/images/lambda/latest/dg/images/APIG_tut_resources.png)
+
+*Figure: API Gateway + Lambda CRUD Operations Architecture*
+
+#### Demo 1: Simple Print (Hello World)
+```python
+def lambda_handler(event, context):
+    return {
+        'statusCode': 200,
+        'body': 'Hello World from Lambda!'
+    }
+```
+👉 **Trigger from API Gateway** → open in browser → see message.
+
+#### Demo 2: Simple Calculation (Add 2 Numbers)
+```python
+def lambda_handler(event, context):
+    a = 5
+    b = 7
+    result = a + b
+    return {
+        'statusCode': 200,
+        'body': f"The sum of {a} and {b} is {result}"
+    }
+```
+👉 **Students can modify a and b.**
+
+#### Demo 3: Take Input from Event
+```python
+def lambda_handler(event, context):
+    a = int(event.get("a", 0))
+    b = int(event.get("b", 0))
+    result = a + b
+    return {
+        'statusCode': 200,
+        'body': f"The sum of {a} and {b} is {result}"
+    }
+```
+👉 **Test with custom JSON event in Lambda console:**
+```json
+{
+  "a": 12,
+  "b": 8
+}
+```
+
+#### Demo 4: Input from API Gateway (Query Params)
+```python
+def lambda_handler(event, context):
+    params = event.get("queryStringParameters", {})
+    a = int(params.get("a", 0))
+    b = int(params.get("b", 0))
+    return {
+        'statusCode': 200,
+        'body': f"Sum is {a+b}"
+    }
+```
+👉 **Call from browser:**
+```
+https://xxxxxx.execute-api.ap-south-1.amazonaws.com?a=10&b=20
+```
+
+#### Demo 5: Return HTML Response
+```python
+def lambda_handler(event, context):
+    html = """
+    <html>
+    <body>
+        <h1>Hello from Lambda!</h1>
+        <p>This is a sample HTML page.</p>
+    </body>
+    </html>
+    """
+    return {
+        'statusCode': 200,
+        'headers': {'Content-Type': 'text/html'},
+        'body': html
+    }
+```
+👉 **Open API Gateway URL** → See webpage instead of plain text.
+
+#### Demo 6: Complete CRUD Operations with DynamoDB
+
+**Create (POST) - Add New Item**
+```python
+import json
+import boto3
+from decimal import Decimal
+
+dynamodb = boto3.resource('dynamodb')
+table = dynamodb.Table('Students')
+
+def lambda_handler(event, context):
+    try:
+        # Parse request body
+        body = json.loads(event['body'])
+        
+        # Add new student
+        response = table.put_item(
+            Item={
+                'student_id': body['student_id'],
+                'name': body['name'],
+                'email': body['email'],
+                'grade': Decimal(str(body['grade']))
+            }
+        )
+        
+        return {
+            'statusCode': 201,
+            'headers': {'Content-Type': 'application/json'},
+            'body': json.dumps({'message': 'Student created successfully'})
+        }
+    except Exception as e:
+        return {
+            'statusCode': 500,
+            'body': json.dumps({'error': str(e)})
+        }
+```
+
+**Read (GET) - Retrieve Item**
+```python
+import json
+import boto3
+
+dynamodb = boto3.resource('dynamodb')
+table = dynamodb.Table('Students')
+
+def lambda_handler(event, context):
+    try:
+        # Get student_id from path parameters
+        student_id = event['pathParameters']['student_id']
+        
+        # Retrieve student
+        response = table.get_item(Key={'student_id': student_id})
+        
+        if 'Item' in response:
+            # Convert Decimal to float for JSON serialization
+            item = response['Item']
+            item['grade'] = float(item['grade'])
+            
+            return {
+                'statusCode': 200,
+                'headers': {'Content-Type': 'application/json'},
+                'body': json.dumps(item)
+            }
+        else:
+            return {
+                'statusCode': 404,
+                'body': json.dumps({'error': 'Student not found'})
+            }
+    except Exception as e:
+        return {
+            'statusCode': 500,
+            'body': json.dumps({'error': str(e)})
+        }
+```
+
+**Update (PUT) - Modify Item**
+```python
+import json
+import boto3
+from decimal import Decimal
+
+dynamodb = boto3.resource('dynamodb')
+table = dynamodb.Table('Students')
+
+def lambda_handler(event, context):
+    try:
+        # Parse request body and path parameters
+        body = json.loads(event['body'])
+        student_id = event['pathParameters']['student_id']
+        
+        # Update student
+        response = table.update_item(
+            Key={'student_id': student_id},
+            UpdateExpression='SET #name = :name, email = :email, grade = :grade',
+            ExpressionAttributeNames={'#name': 'name'},
+            ExpressionAttributeValues={
+                ':name': body['name'],
+                ':email': body['email'],
+                ':grade': Decimal(str(body['grade']))
+            },
+            ReturnValues='ALL_NEW'
+        )
+        
+        # Convert Decimal to float
+        item = response['Attributes']
+        item['grade'] = float(item['grade'])
+        
+        return {
+            'statusCode': 200,
+            'headers': {'Content-Type': 'application/json'},
+            'body': json.dumps(item)
+        }
+    except Exception as e:
+        return {
+            'statusCode': 500,
+            'body': json.dumps({'error': str(e)})
+        }
+```
+
+**Delete (DELETE) - Remove Item**
+```python
+import json
+import boto3
+
+dynamodb = boto3.resource('dynamodb')
+table = dynamodb.Table('Students')
+
+def lambda_handler(event, context):
+    try:
+        # Get student_id from path parameters
+        student_id = event['pathParameters']['student_id']
+        
+        # Delete student
+        response = table.delete_item(
+            Key={'student_id': student_id},
+            ReturnValues='ALL_OLD'
+        )
+        
+        if 'Attributes' in response:
+            return {
+                'statusCode': 200,
+                'headers': {'Content-Type': 'application/json'},
+                'body': json.dumps({'message': 'Student deleted successfully'})
+            }
+        else:
+            return {
+                'statusCode': 404,
+                'body': json.dumps({'error': 'Student not found'})
+            }
+    except Exception as e:
+        return {
+            'statusCode': 500,
+            'body': json.dumps({'error': str(e)})
+        }
+```
+
+**List All (GET) - Retrieve All Items**
+```python
+import json
+import boto3
+
+dynamodb = boto3.resource('dynamodb')
+table = dynamodb.Table('Students')
+
+def lambda_handler(event, context):
+    try:
+        # Scan all items
+        response = table.scan()
+        
+        # Convert Decimal to float for all items
+        items = []
+        for item in response['Items']:
+            item['grade'] = float(item['grade'])
+            items.append(item)
+        
+        return {
+            'statusCode': 200,
+            'headers': {'Content-Type': 'application/json'},
+            'body': json.dumps({
+                'students': items,
+                'count': len(items)
+            })
+        }
+    except Exception as e:
+        return {
+            'statusCode': 500,
+            'body': json.dumps({'error': str(e)})
+        }
+```
+
+👉 **API Gateway Integration:**
+- **POST** `/students` → Create new student
+- **GET** `/students/{student_id}` → Get specific student
+- **PUT** `/students/{student_id}` → Update student
+- **DELETE** `/students/{student_id}` → Delete student
+- **GET** `/students` → List all students
+
+### 🎯 S3-Lambda Integration Tutorial
+
+![S3 Object Trigger to Lambda](https://miro.medium.com/1*toe-snbPEXoAa2c_8bZb7A.jpeg)
+
+*Figure: S3 Object Upload Triggering Lambda Function*
+
+**Goal:** When someone uploads a file to an S3 bucket, Lambda runs and logs the S3 bucket name and object key (file name) to CloudWatch.
+
+#### Steps (Console)
+
+**1. Create S3 bucket**
+- Open AWS Console → S3
+- Click Create bucket
+- Enter a unique bucket name (e.g. `my-demo-s3-trigger-<yourid>`), choose a region
+- Leave defaults for now (you can keep Block public access ON)
+- Click Create bucket
+
+**2. Create Lambda function**
+- Open AWS Console → Lambda
+- Click Create function → Author from scratch
+- Function name: `s3-upload-logger`
+- Runtime: choose Python 3.10 (or latest available)
+- Under Permissions choose Create new role from AWS policy templates
+- Role name: `lambda-s3-logger-role`
+- Add the template policy `AWSLambdaBasicExecutionRole` (this gives CloudWatch logs permission)
+- Click Create function
+
+**Note:** After creation, go to Configuration → Permissions and attach `AmazonS3ReadOnlyAccess` if you plan to read object contents. For only logging object name the BasicExecutionRole is enough.
+
+**3. Paste Lambda code**
+In your Lambda function console, under Code (inline editor), replace the default with this code:
+
+```python
+import json
+import urllib.parse
+import boto3
+import logging
+
+logger = logging.getLogger()
+logger.setLevel(logging.INFO)
+
+# if you need to read the object, uncomment and use s3 client:
+s3 = boto3.client('s3')
+
+def lambda_handler(event, context):
+    # event contains Records for the S3 Put event
+    logger.info("Received event: %s", json.dumps(event))
+
+    # Safely extract bucket and key for the first record
+    try:
+        record = event['Records'][0]
+        bucket = record['s3']['bucket']['name']
+        # key can be URL encoded, so decode it
+        key = urllib.parse.unquote_plus(record['s3']['object']['key'])
+    except Exception as e:
+        logger.error("Error parsing event: %s", e)
+        return {
+            'statusCode': 400,
+            'body': json.dumps({'error': 'Invalid S3 event format'})
+        }
+
+    logger.info("S3 object uploaded: bucket=%s key=%s", bucket, key)
+
+    # OPTIONAL: If you want to read the object content (commented)
+    # try:
+    #     resp = s3.get_object(Bucket=bucket, Key=key)
+    #     body = resp['Body'].read().decode('utf-8')
+    #     logger.info("Object content (first 200 chars): %s", body[:200])
+    # except Exception as e:
+    #     logger.warning("Unable to read object: %s", e)
+
+    return {
+        'statusCode': 200,
+        'body': json.dumps({'message': 'Logged S3 object info', 'bucket': bucket, 'key': key})
+    }
+```
+
+Click Deploy.
+
+**4. Add S3 trigger to Lambda**
+- In the Lambda console, on the function page, click Add trigger
+- Choose S3 as the trigger
+- Configure:
+  - Bucket: select the bucket you created in Step 1
+  - Event type: PUT (choose All object create events to include uploads via console/put)
+  - Prefix/Suffix: optional (e.g., prefix `uploads/`)
+  - Enable trigger: checked
+- Click Add
+
+When you add the trigger via the console, AWS will automatically add permission allowing S3 to invoke your Lambda (a resource policy). If the console cannot add it automatically you'll see an error and you can add the permission manually, but usually console does it.
+
+**5. Upload a file to the bucket (test)**
+- Open S3 → your-bucket
+- Click Upload → Add files → choose a small file (e.g., `hello.txt`), click Upload
+- The upload will generate an S3 Put event which should invoke Lambda
+
+**6. Check CloudWatch logs**
+- In the Lambda console, open Monitor → View logs in CloudWatch
+- Click the latest log stream
+- You should see log lines such as:
+  ```
+  INFO Received event: {...}
+  INFO S3 object uploaded: bucket=my-demo-s3-trigger-... key=hello.txt
+  ```
+
+If you enabled the optional read, you may see object contents (first 200 chars).
+
+#### How the S3 event looks (for your test or to simulate)
+
+If you want to simulate a test in Lambda console, use a sample S3 event like:
+
+```json
+{
+  "Records": [
+    {
+      "eventVersion": "2.1",
+      "eventSource": "aws:s3",
+      "awsRegion": "ap-south-1",
+      "eventTime": "2025-09-xxTxx:xx:xx.000Z",
+      "eventName": "ObjectCreated:Put",
+      "s3": {
+        "bucket": {
+          "name": "my-demo-s3-trigger-yourid"
+        },
+        "object": {
+          "key": "hello.txt",
+          "size": 123
+        }
+      }
+    }
+  ]
+}
+```
+
+Use Test → Configure test event in Lambda to paste the JSON and run the function without uploading.
+
+#### Important notes & troubleshooting
+
+**Permissions:**
+- Lambda needs `AWSLambdaBasicExecutionRole` to write logs to CloudWatch (console adds this for you if you used the template)
+- If you attempt to read the object inside Lambda (`s3.get_object`), attach `AmazonS3ReadOnlyAccess` to the Lambda execution role
+
+**Event structure:** S3 keys are URL-encoded for special characters; use `urllib.parse.unquote_plus` to decode.
+
+**Trigger not firing? Check:**
+- Is trigger enabled in Lambda (Triggers panel)?
+- Is the bucket name correct?
+- Uploaded object event type matches chosen event (e.g., object created)
+- CloudWatch logs show invocation attempts or errors
+
+**Permissions denied:** If S3 cannot invoke Lambda, check the Lambda Resource-based policy (on Lambda → Configuration → Permissions → Resource-based policy). The console normally adds this automatically when you add trigger.
+
+**Costs:** Minimal for such events, but note that Lambda invocations and CloudWatch logs have small costs (OK for demos).
+
+#### Quick checklist (short)
+1. Create S3 bucket
+2. Create Lambda with `AWSLambdaBasicExecutionRole`
+3. Paste code, Deploy
+4. Add S3 trigger to Lambda (All object create events)
+5. Upload file to S3
+6. View logs in CloudWatch
+
+### 🚀 Advanced Lambda Topics
+
+#### Lambda Layers
+- **What:** Share code libraries across multiple Lambda functions
+- **Benefits:** Reduce deployment package size, faster deployments
+- **Use Cases:** Common dependencies, custom libraries
+- **Example:** Share database connection code across functions
+
+#### Provisioned Concurrency
+- **What:** Pre-warm Lambda containers to avoid cold starts
+- **Use Cases:** Low-latency applications, predictable workloads
+- **Cost:** Additional charges for keeping containers warm
+- **Best Practice:** Use for critical user-facing functions
+
+#### Lambda Destinations
+- **What:** Send function results to other AWS services
+- **Destinations:** SQS, SNS, EventBridge, Lambda
+- **Use Cases:** Asynchronous processing, event chaining
+- **Benefits:** Decouple functions from downstream services
+
+#### Lambda@Edge
+- **What:** Run Lambda functions at CloudFront edge locations
+- **Use Cases:** Request/response modification, A/B testing
+- **Benefits:** Lower latency, global execution
+- **Limitations:** Limited runtime support, smaller execution time
+
+### 📊 Lambda Monitoring & Debugging
+
+#### CloudWatch Metrics
+- **Invocations:** Number of function executions
+- **Duration:** Execution time
+- **Errors:** Failed executions
+- **Throttles:** When concurrency limit is reached
+- **Dead Letter Queue:** Failed messages
+
+#### CloudWatch Logs
+- **Log Groups:** Automatically created for each function
+- **Log Streams:** Individual execution logs
+- **Log Retention:** Configurable (1 day to never expire)
+- **Cost:** $0.50 per GB ingested
+
+#### X-Ray Tracing
+- **What:** Distributed tracing for Lambda functions
+- **Benefits:** End-to-end request tracing, performance analysis
+- **Use Cases:** Complex applications with multiple services
+- **Cost:** $5.00 per million traces
+
+### 🎯 Lambda Best Practices
+
+#### Performance Optimization
+- **Memory Allocation:** Right-size memory (affects CPU and cost)
+- **Package Size:** Minimize deployment package size
+- **Dependencies:** Use layers for common libraries
+- **Connection Pooling:** Reuse database connections
+- **Avoid Cold Starts:** Use provisioned concurrency for critical functions
+
+#### Security Best Practices
+- **IAM Roles:** Principle of least privilege
+- **Environment Variables:** Use AWS Systems Manager Parameter Store
+- **VPC Configuration:** Only when necessary (increases cold start time)
+- **Secrets Management:** Use AWS Secrets Manager
+- **Code Signing:** Verify code integrity
+
+#### Cost Optimization
+- **Right-size Memory:** Monitor actual memory usage
+- **Optimize Duration:** Reduce execution time
+- **Reserved Concurrency:** Control costs for high-volume functions
+- **Dead Letter Queues:** Handle failed executions efficiently
+- **Monitoring:** Set up billing alerts
+
+### 🔧 Lambda Troubleshooting
+
+#### Common Issues
+- **Timeout Errors:** Increase timeout or optimize code
+- **Memory Errors:** Increase memory allocation
+- **Permission Errors:** Check IAM roles and policies
+- **Cold Start Issues:** Use provisioned concurrency
+- **Package Too Large:** Use layers or optimize dependencies
+
+#### Debugging Tools
+- **CloudWatch Logs:** Detailed execution logs
+- **X-Ray:** Distributed tracing
+- **Lambda Console:** Test events and monitoring
+- **AWS CLI:** Programmatic debugging
+- **Local Testing:** SAM CLI for local development
 
 ### Lambda Benefits:
 
@@ -4915,6 +5473,7 @@ with table.batch_writer() as batch:
 - **Pay Per Use:** Only pay when your code runs
 - **Auto Scaling:** Handles any number of requests
 - **Event-Driven:** Responds to events automatically
+
 ### Lambda Use Cases:
 
 - **API Backends:** REST APIs, GraphQL
@@ -4922,24 +5481,35 @@ with table.batch_writer() as batch:
 - **Scheduled Tasks:** Cron jobs, cleanup tasks
 - **IoT:** Process sensor data
 - **Chatbots:** Respond to user messages
+- **Image Processing:** Resize, compress images
+- **Real-time Analytics:** Process streaming data
+- **Microservices:** Break down monolithic applications
+
 ### Lambda Pricing:
 
 - **Free Tier:** 1 million requests per month
 - **After Free Tier:** $0.20 per 1 million requests
 - **Compute Time:** $0.0000166667 per GB-second
+- **Provisioned Concurrency:** $0.0000041667 per GB-second
+- **Duration:** Billed in 1ms increments
 
-### Lambda Example (Python):
+### Supported Runtimes:
 
-```python
-import json
+- **Node.js:** 18.x, 20.x
+- **Python:** 3.9, 3.10, 3.11
+- **Java:** 8, 11, 17, 21
+- **C#:** .NET 6, .NET 8
+- **Go:** 1.x
+- **Ruby:** 3.2
+- **Custom Runtime:** Any language that can run on Amazon Linux
 
-def lambda_handler(event, context):
-    # Your code here
-    return {
-        'statusCode': 200,
-        'body': json.dumps('Hello from Lambda!')
-    }
-```
+### Lambda Limits:
+
+- **Memory:** 128 MB to 10 GB
+- **Timeout:** 15 minutes maximum
+- **Package Size:** 50 MB (zipped), 250 MB (unzipped)
+- **Environment Variables:** 4 KB total
+- **Concurrent Executions:** 1000 per region (can be increased)
 ## 🎯 AWS Elastic Beanstalk (Platform as a Service)
 
 **What is Elastic Beanstalk?** → Deploy and manage applications without worrying about infrastructure.
