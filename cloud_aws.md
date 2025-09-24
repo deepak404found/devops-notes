@@ -13,19 +13,13 @@ This comprehensive guide covers everything from cloud computing fundamentals to 
 - [AWS Overview](#-aws-overview)
 
 ### 🔐 AWS Identity and Access Management (IAM)
-- [IAM Core Components](#-iam-core-components-explained)
-- [IAM Security Best Practices](#-iam-security-best-practices-detailed)
-- [IAM Policy Types](#-iam-policy-types-explained)
-- [IAM Troubleshooting](#-iam-troubleshooting-common-issues)
-- [IAM Monitoring and Auditing](#-iam-monitoring-and-auditing)
-- [Real-World IAM Scenarios](#-real-world-iam-scenarios)
+- [IAM Complete Guide](#-aws-identity-and-access-management-iam---complete-guide)
+- [IAM Deep Dive](#-identity-and-access-management-iam-deep-dive)
 
 ### 🖥 Amazon EC2 (Elastic Compute Cloud)
-- [EC2 Core Concepts](#-ec2-core-concepts-explained)
-- [Instance Types](#-instance-type-categories-detailed)
-- [EC2 Launch & Management](#-ec2-instance-launch--management)
+- [EC2 Instance Launch & Management](#-ec2-instance-launch--management)
 - [EC2 Pricing & Cost Management](#-ec2-pricing--cost-management)
-- [Step-by-Step EC2 Launch Guide](#-ec2-instance-launch---complete-step-by-step-guide)
+- [Step-by-Step EC2 Launch Process](#-step-by-step-ec2-launch-process)
 - [Common Issues and Solutions](#-common-issues-and-solutions)
 
 ### 🔑 SSH Connection & Server Management
@@ -77,14 +71,23 @@ This comprehensive guide covers everything from cloud computing fundamentals to 
 - [Security Monitoring](#-security-monitoring)
 
 ### 🚀 AWS Compute Services (Beyond EC2)
-- [AWS Lambda (Serverless Computing)](#-aws-lambda-serverless-computing)
+- [AWS Lambda (Serverless Computing)](#-aws-lambda-serverless-computing---complete-guide)
 - [AWS Elastic Beanstalk (Platform as a Service)](#-aws-elastic-beanstalk-platform-as-a-service)
+
+### 📊 AWS Monitoring & Observability Services
+- [Amazon CloudWatch (Monitoring & Logging)](#-amazon-cloudwatch-monitoring--logging-detailed-guide)
+- [CloudWatch Logs](#-cloudwatch-logs---detailed-explanation)
+- [CloudWatch Metrics](#-cloudwatch-metrics---detailed-explanation)
+- [CloudWatch Alarms](#-cloudwatch-alarms---detailed-explanation)
+- [CloudWatch Dashboards](#-cloudwatch-dashboards---detailed-explanation)
+- [CloudWatch Demo Projects](#-cloudwatch-demo-projects---step-by-step)
 
 ### 🌐 AWS Networking Services
 - [Amazon VPC (Virtual Private Cloud)](#-amazon-vpc-virtual-private-cloud)
 - [Amazon Route 53 (DNS Service)](#-amazon-route-53-dns-service)
 
 ### 🛠 Hands-On Projects
+- [Hands-On Exercises and Projects](#-hands-on-exercises-and-projects)
 - [Beginner Projects](#-beginner-projects)
 - [Intermediate Projects](#-intermediate-projects)
 
@@ -5535,6 +5538,663 @@ Use Test → Configure test event in Lambda to paste the JSON and run the functi
 - **EC2:** Lower level, more control
 - **Elastic Beanstalk:** Faster to deploy
 - **EC2:** More customization options
+# 📊 Amazon CloudWatch (Monitoring & Logging) - Detailed Guide
+
+## 📌 Amazon CloudWatch – Detailed Explanation
+
+![CloudWatch Architecture](https://miro.medium.com/1*a9XGss8ip_cTpt1SKMdr1g.png)
+
+*Figure: CloudWatch as a central monitoring and observability service connecting to various AWS functionalities*
+
+### 1. What is CloudWatch?
+
+CloudWatch is like CCTV for AWS.
+
+It monitors and collects data about what's happening in your AWS environment.
+
+It doesn't just watch servers (EC2, Lambda, RDS, S3, etc.) but also lets you set up:
+
+- **Logs** → see application/system logs.
+- **Metrics** → numerical values like CPU usage, number of requests.
+- **Alarms** → alert you when something goes wrong (via email/SMS).
+- **Dashboards** → visualize metrics with graphs.
+
+👉 **Think of it as AWS's monitoring and alert system.**
+
+As shown in the diagram above, CloudWatch serves as the central hub connecting to:
+- **Logs** (top) - Application and system log management
+- **Metrics** (upper right) - Performance data visualization
+- **Alarms** (right) - Automated alerting system
+- **X-Ray** (bottom right) - Distributed tracing
+- **Agent** (bottom) - Monitoring agent for custom metrics
+- **Events** (bottom left) - Event-driven automation
+- **Dashboard** (upper left) - Custom visualization interface
+
+### 2. Key Components
+
+#### Metrics
+- Numbers over time (e.g., CPUUtilization = 80%).
+- Auto-collected for AWS services (EC2, Lambda, RDS). You can also create custom metrics.
+
+#### Logs
+- Stores application/system logs.
+- Example: Lambda function print() or logger.info() outputs are automatically stored in CloudWatch Logs.
+
+#### Alarms
+- Watch a metric → if condition is met, trigger an action.
+- Example: "If CPU > 80% for 5 minutes → send email."
+
+#### Events (EventBridge)
+- React to AWS events automatically.
+- Example: "When EC2 instance stops → trigger Lambda."
+
+#### Dashboards
+- Custom views with graphs, text, and widgets.
+
+### 3. Why use CloudWatch?
+
+- Monitor app health and performance.
+- Detect issues before users notice.
+- Automate responses (auto-restart, scale up).
+- Audit logs (with CloudTrail, combined).
+
+## 📊 CloudWatch Logs - Detailed Explanation
+
+### What are CloudWatch Logs?
+
+CloudWatch Logs is like a digital diary for your applications and AWS services.
+
+**Real-world analogy:** Like security cameras recording everything that happens in a building, CloudWatch Logs records everything that happens in your AWS environment.
+
+### Key Features:
+
+#### 1. **Log Groups**
+- Container for log streams
+- Example: `/aws/lambda/my-function` (all logs from a Lambda function)
+
+#### 2. **Log Streams**
+- Individual log files within a log group
+- Example: Each Lambda invocation creates a new log stream
+
+#### 3. **Log Events**
+- Individual log entries
+- Contains timestamp, message, and metadata
+
+### Common Use Cases:
+
+#### Application Logging
+```python
+import logging
+import json
+
+logger = logging.getLogger()
+logger.setLevel(logging.INFO)
+
+def lambda_handler(event, context):
+    logger.info("Lambda invoked with event: %s", json.dumps(event))
+    logger.error("This is an error message")
+    return {"statusCode": 200, "body": "Hello from Lambda!"}
+```
+
+#### System Logs
+- EC2 instance logs
+- Docker container logs
+- Application server logs
+
+#### Security Logs
+- Failed login attempts
+- Unauthorized access attempts
+- API call logs
+
+### Log Retention:
+- **Default:** Logs are kept indefinitely
+- **Cost optimization:** Set retention periods (1 day, 7 days, 30 days, etc.)
+- **Compliance:** Some regulations require longer retention
+
+## 📈 CloudWatch Metrics - Detailed Explanation
+
+### What are CloudWatch Metrics?
+
+CloudWatch Metrics are numerical data points that represent the performance and health of your AWS resources.
+
+**Real-world analogy:** Like a car's dashboard showing speed, fuel level, and engine temperature.
+
+### Types of Metrics:
+
+#### 1. **AWS Service Metrics** (Free)
+- **EC2:** CPUUtilization, NetworkIn, NetworkOut, DiskReadOps
+- **Lambda:** Invocations, Errors, Duration, Throttles
+- **RDS:** CPUUtilization, DatabaseConnections, FreeStorageSpace
+- **S3:** BucketSizeBytes, NumberOfObjects, AllRequests
+
+#### 2. **Custom Metrics** (Paid)
+- Application-specific metrics
+- Business metrics
+- Custom KPIs
+
+### Metric Dimensions:
+
+Metrics can have dimensions to filter and organize data:
+
+#### EC2 Metrics:
+- **InstanceId:** Specific EC2 instance
+- **InstanceType:** Type of instance (t2.micro, m5.large)
+- **AutoScalingGroupName:** If part of Auto Scaling Group
+
+#### Lambda Metrics:
+- **FunctionName:** Specific Lambda function
+- **Resource:** Function version or alias
+
+### Metric Statistics:
+
+#### Available Statistics:
+- **Average:** Mean value over time period
+- **Sum:** Total value over time period
+- **Maximum:** Highest value in time period
+- **Minimum:** Lowest value in time period
+- **SampleCount:** Number of data points
+
+#### Time Periods:
+- **1 minute:** Most detailed, higher cost
+- **5 minutes:** Default, good balance
+- **1 hour:** Less detailed, lower cost
+
+### Example Metrics Dashboard:
+
+```
+EC2 Instance Metrics:
+├── CPUUtilization: 45% (Average)
+├── NetworkIn: 1.2 MB/s (Sum)
+├── NetworkOut: 0.8 MB/s (Sum)
+└── StatusCheckFailed: 0 (Sum)
+
+Lambda Function Metrics:
+├── Invocations: 1,250 (Sum)
+├── Errors: 3 (Sum)
+├── Duration: 150ms (Average)
+└── Throttles: 0 (Sum)
+```
+
+## 🚨 CloudWatch Alarms - Detailed Explanation
+
+### What are CloudWatch Alarms?
+
+CloudWatch Alarms are like smoke detectors for your AWS resources - they watch for problems and alert you when something goes wrong.
+
+**Real-world analogy:** Like a home security system that calls you when someone breaks in.
+
+### Alarm States:
+
+#### 1. **OK**
+- Everything is normal
+- No action needed
+
+#### 2. **ALARM**
+- Problem detected
+- Action triggered (email, SMS, etc.)
+
+#### 3. **INSUFFICIENT_DATA**
+- Not enough data to determine state
+- Usually happens when resource is starting up
+
+### Alarm Types:
+
+#### 1. **Threshold Alarms**
+- Most common type
+- Trigger when metric crosses a threshold
+- Example: CPU > 80% for 5 minutes
+
+#### 2. **Anomaly Detection**
+- Uses machine learning to detect unusual patterns
+- Example: Detect unusual traffic patterns
+
+#### 3. **Composite Alarms**
+- Combine multiple alarms
+- Example: Trigger only if both CPU > 80% AND Memory > 90%
+
+### Common Alarm Examples:
+
+#### EC2 Alarms:
+```bash
+# High CPU Usage
+aws cloudwatch put-metric-alarm \
+  --alarm-name "High-CPU-Utilization" \
+  --alarm-description "Alert when CPU exceeds 80%" \
+  --metric-name CPUUtilization \
+  --namespace AWS/EC2 \
+  --statistic Average \
+  --period 300 \
+  --threshold 80 \
+  --comparison-operator GreaterThanThreshold \
+  --evaluation-periods 2
+```
+
+#### Lambda Alarms:
+```bash
+# Lambda Errors
+aws cloudwatch put-metric-alarm \
+  --alarm-name "Lambda-Errors" \
+  --alarm-description "Alert when Lambda has errors" \
+  --metric-name Errors \
+  --namespace AWS/Lambda \
+  --statistic Sum \
+  --period 300 \
+  --threshold 1 \
+  --comparison-operator GreaterThanOrEqualToThreshold \
+  --evaluation-periods 1
+```
+
+### Alarm Actions:
+
+#### 1. **SNS Notifications**
+- Send email, SMS, or push notifications
+- Most common action
+
+#### 2. **Auto Scaling Actions**
+- Scale up/down based on metrics
+- Example: Add EC2 instances when CPU is high
+
+#### 3. **EC2 Actions**
+- Stop, terminate, or reboot instances
+- Example: Stop instance when not in use
+
+#### 4. **Lambda Actions**
+- Invoke Lambda functions
+- Example: Send Slack notification
+
+## 📊 CloudWatch Dashboards - Detailed Explanation
+
+![CloudWatch Dashboard Example](https://sinovi.uk/images/articles/cw-dashboard.jpg)
+
+*Figure: Real CloudWatch Dashboard showing Lambda metrics, response times, latency, and concurrency*
+
+### What are CloudWatch Dashboards?
+
+CloudWatch Dashboards are like a control room display - they show you all the important information about your AWS environment in one place.
+
+**Real-world analogy:** Like a car's dashboard showing speed, fuel, temperature, and other important gauges.
+
+As you can see in the dashboard screenshot above, a typical CloudWatch dashboard includes:
+- **Invocations Graph** (top left) - Shows Lambda function call counts over time
+- **Response Graph** (top right) - Displays successful (200) vs error (4xx/5xx) responses
+- **Latency Graph** (middle) - Shows average, maximum, and minimum response times
+- **Concurrency Metric** (bottom right) - Current concurrent executions
+- **Log Events Metric** (bottom right) - Number of incoming log events
+
+### Dashboard Features:
+
+#### 1. **Widgets**
+- **Line charts:** Show metrics over time
+- **Number widgets:** Display single metric values
+- **Text widgets:** Add descriptions and notes
+- **Log widgets:** Show recent log entries
+
+#### 2. **Real-time Updates**
+- Dashboards update automatically
+- Refresh intervals: 1 second to 1 hour
+
+#### 3. **Sharing**
+- Share dashboards with team members
+- Embed in other applications
+- Export as images
+
+### Dashboard Best Practices:
+
+#### 1. **Organize by Service**
+```
+Production Dashboard:
+├── EC2 Instances
+│   ├── CPU Utilization
+│   ├── Memory Usage
+│   └── Network Traffic
+├── Lambda Functions
+│   ├── Invocations
+│   ├── Errors
+│   └── Duration
+└── Databases
+    ├── Connection Count
+    ├── CPU Usage
+    └── Storage Space
+```
+
+#### 2. **Use Appropriate Time Ranges**
+- **Operational dashboards:** Last 1-4 hours
+- **Business dashboards:** Last 24 hours to 1 week
+- **Capacity planning:** Last 30 days
+
+#### 3. **Color Coding**
+- **Green:** Normal/healthy
+- **Yellow:** Warning
+- **Red:** Critical/error
+
+### Dashboard Examples:
+
+#### Application Performance Dashboard:
+```
+┌─────────────────────────────────────────────────────────┐
+│ Application Performance Dashboard                       │
+├─────────────────────────────────────────────────────────┤
+│ CPU Utilization: 45% ████████░░░░░░░░░░░░░░░░░░░░░░░░░░  │
+│ Memory Usage: 2.1GB ██████████████████████████████████  │
+│ Response Time: 150ms ██████████████████████████████████  │
+│ Error Rate: 0.1% ██████████████████████████████████      │
+└─────────────────────────────────────────────────────────┘
+```
+
+## 🚀 CloudWatch Demo Projects - Step by Step
+
+### Demo 1: CloudWatch Logs (Lambda Example)
+
+**Goal:** Create a Lambda function that logs information and view the logs in CloudWatch.
+
+#### Step 1: Create Lambda Function
+```python
+import json
+import logging
+import time
+
+logger = logging.getLogger()
+logger.setLevel(logging.INFO)
+
+def lambda_handler(event, context):
+    # Log the incoming event
+    logger.info("Lambda invoked with event: %s", json.dumps(event))
+    
+    # Log current timestamp
+    current_time = time.time()
+    logger.info("Current timestamp: %s", current_time)
+    
+    # Simulate some processing
+    logger.info("Processing started...")
+    time.sleep(1)  # Simulate work
+    logger.info("Processing completed")
+    
+    # Log response
+    response = {
+        "statusCode": 200,
+        "body": "Hello from Lambda!",
+        "timestamp": current_time
+    }
+    
+    logger.info("Response: %s", json.dumps(response))
+    
+    return response
+```
+
+#### Step 2: Test the Function
+1. Go to Lambda console
+2. Create new function
+3. Paste the code above
+4. Deploy the function
+5. Test with sample event
+6. Go to CloudWatch → Logs → Log groups
+7. Find `/aws/lambda/your-function-name`
+8. Click on latest log stream
+9. View the log entries
+
+#### Step 3: Analyze Logs
+- **INFO level:** General information
+- **ERROR level:** Error messages
+- **WARN level:** Warning messages
+- **DEBUG level:** Detailed debugging info
+
+### Demo 2: CloudWatch Metrics
+
+**Goal:** Monitor Lambda function metrics and create visualizations.
+
+#### Step 1: Invoke Lambda Multiple Times
+1. Go to Lambda console
+2. Test the function 10-15 times
+3. Wait 5-10 minutes for metrics to appear
+
+#### Step 2: View Metrics in CloudWatch
+1. Go to CloudWatch → Metrics
+2. Choose "AWS/Lambda"
+3. Select "By function name"
+4. Choose your function
+5. Select metrics:
+   - **Invocations:** Number of times function was called
+   - **Errors:** Number of errors
+   - **Duration:** How long function took to run
+   - **Throttles:** Number of throttled requests
+
+#### Step 3: Create Graph
+1. Select multiple metrics
+2. Choose time range (last 1 hour)
+3. Set period (5 minutes)
+4. Choose statistic (Sum for Invocations, Average for Duration)
+5. Create graph
+
+### Demo 3: CloudWatch Alarm with SNS
+
+**Goal:** Create an alarm that sends email when Lambda has errors.
+
+#### Step 1: Create SNS Topic
+```bash
+aws sns create-topic --name lambda-errors-alert
+```
+
+#### Step 2: Subscribe to Topic
+```bash
+aws sns subscribe \
+  --topic-arn arn:aws:sns:us-east-1:123456789012:lambda-errors-alert \
+  --protocol email \
+  --notification-endpoint your-email@example.com
+```
+
+#### Step 3: Create CloudWatch Alarm
+```bash
+aws cloudwatch put-metric-alarm \
+  --alarm-name "Lambda-Errors-Alert" \
+  --alarm-description "Alert when Lambda function has errors" \
+  --metric-name Errors \
+  --namespace AWS/Lambda \
+  --statistic Sum \
+  --period 300 \
+  --threshold 1 \
+  --comparison-operator GreaterThanOrEqualToThreshold \
+  --evaluation-periods 1 \
+  --alarm-actions arn:aws:sns:us-east-1:123456789012:lambda-errors-alert
+```
+
+#### Step 4: Test the Alarm
+1. Modify Lambda function to throw an error:
+```python
+def lambda_handler(event, context):
+    logger.info("Lambda invoked")
+    raise Exception("Demo error for testing alarm!")
+```
+
+2. Deploy and test the function
+3. Wait 5-10 minutes
+4. Check your email for the alarm notification
+
+#### Step 5: Verify Alarm State
+1. Go to CloudWatch → Alarms
+2. Check "Lambda-Errors-Alert" alarm
+3. State should be "ALARM"
+4. Check alarm history
+
+### Demo 4: CloudWatch Dashboard
+
+**Goal:** Create a comprehensive dashboard for monitoring.
+
+#### Step 1: Create Dashboard
+1. Go to CloudWatch → Dashboards
+2. Click "Create dashboard"
+3. Name: "My Application Dashboard"
+
+#### Step 2: Add Widgets
+
+##### Widget 1: Lambda Metrics
+1. Click "Add widget"
+2. Choose "Line"
+3. Select metrics:
+   - AWS/Lambda → Invocations
+   - AWS/Lambda → Errors
+   - AWS/Lambda → Duration
+4. Set time range: Last 1 hour
+5. Set period: 5 minutes
+
+##### Widget 2: EC2 Metrics (if you have EC2 instances)
+1. Click "Add widget"
+2. Choose "Line"
+3. Select metrics:
+   - AWS/EC2 → CPUUtilization
+   - AWS/EC2 → NetworkIn
+   - AWS/EC2 → NetworkOut
+
+##### Widget 3: Number Widget
+1. Click "Add widget"
+2. Choose "Number"
+3. Select metric: AWS/Lambda → Invocations
+4. Set statistic: Sum
+5. Set time range: Last 24 hours
+
+#### Step 3: Customize Dashboard
+1. Add text widgets for descriptions
+2. Arrange widgets logically
+3. Set refresh interval
+4. Save dashboard
+
+## 💰 CloudWatch Pricing
+
+### Free Tier:
+- **10 Custom Metrics**
+- **10 Alarms**
+- **1 Million API Requests**
+- **5GB Log Ingestion**
+- **5GB Log Storage**
+
+### Paid Services:
+- **Custom Metrics:** $0.30 per metric per month
+- **Alarms:** $0.10 per alarm per month (after free tier)
+- **Log Ingestion:** $0.50 per GB
+- **Log Storage:** $0.03 per GB per month
+- **Dashboard:** $3.00 per dashboard per month
+
+### Cost Optimization Tips:
+1. **Set log retention periods**
+2. **Use appropriate metric periods**
+3. **Delete unused alarms**
+4. **Use log filters to reduce ingestion**
+5. **Monitor your CloudWatch costs**
+
+## 🔧 CloudWatch Best Practices
+
+### 1. **Log Management**
+- Use structured logging (JSON format)
+- Set appropriate log levels
+- Implement log rotation
+- Use log filters for cost optimization
+
+### 2. **Metric Collection**
+- Collect only necessary metrics
+- Use appropriate statistics
+- Set proper time periods
+- Monitor custom metric costs
+
+### 3. **Alarm Configuration**
+- Set realistic thresholds
+- Use appropriate evaluation periods
+- Test alarms regularly
+- Use composite alarms for complex conditions
+
+### 4. **Dashboard Design**
+- Organize by service/application
+- Use appropriate time ranges
+- Include both operational and business metrics
+- Keep dashboards focused and relevant
+
+### 5. **Security**
+- Use IAM roles for CloudWatch access
+- Encrypt log data
+- Monitor CloudWatch API calls
+- Use VPC endpoints for private access
+
+## 🚨 Real-Life Use Cases
+
+### 1. **E-commerce Website Monitoring**
+- Monitor EC2 CPU and memory usage
+- Track application response times
+- Alert on high error rates
+- Monitor database performance
+
+### 2. **Serverless Application Monitoring**
+- Track Lambda function performance
+- Monitor API Gateway metrics
+- Alert on function failures
+- Track cold start times
+
+### 3. **Database Monitoring**
+- Monitor RDS performance metrics
+- Track connection counts
+- Alert on storage space
+- Monitor replication lag
+
+### 4. **Cost Monitoring**
+- Track AWS service costs
+- Alert on budget thresholds
+- Monitor resource utilization
+- Identify cost optimization opportunities
+
+### 5. **Security Monitoring**
+- Monitor failed login attempts
+- Track API access patterns
+- Alert on unusual activity
+- Monitor compliance metrics
+
+## 🔍 Troubleshooting Common Issues
+
+### 1. **Logs Not Appearing**
+- Check IAM permissions
+- Verify log group exists
+- Check log retention settings
+- Verify application is logging correctly
+
+### 2. **Metrics Not Updating**
+- Wait 5-15 minutes for metrics to appear
+- Check metric namespace and dimensions
+- Verify resource is active
+- Check CloudWatch agent status
+
+### 3. **Alarms Not Triggering**
+- Check alarm configuration
+- Verify metric exists
+- Check evaluation periods
+- Verify SNS topic permissions
+
+### 4. **High Costs**
+- Review log retention settings
+- Check custom metric usage
+- Monitor dashboard costs
+- Use log filters to reduce ingestion
+
+### 5. **Performance Issues**
+- Check CloudWatch agent configuration
+- Monitor agent resource usage
+- Use appropriate metric periods
+- Consider using CloudWatch Insights
+
+## 📚 Additional Resources
+
+### AWS Documentation:
+- [CloudWatch User Guide](https://docs.aws.amazon.com/cloudwatch/)
+- [CloudWatch Logs User Guide](https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/)
+- [CloudWatch Metrics User Guide](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/)
+
+### Best Practices:
+- [CloudWatch Best Practices](https://aws.amazon.com/cloudwatch/faqs/)
+- [Logging Best Practices](https://docs.aws.amazon.com/lambda/latest/dg/monitoring-logging.html)
+- [Monitoring Best Practices](https://aws.amazon.com/architecture/well-architected/)
+
+### Tools and Integrations:
+- [CloudWatch Agent](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/Install-CloudWatch-Agent.html)
+- [CloudWatch Insights](https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/AnalyzingLogData.html)
+- [Third-party Integrations](https://aws.amazon.com/cloudwatch/integrations/)
+
+---
+
 # 🌐 AWS Networking Services (Complete Guide)
 
 ## 🏗 Amazon VPC (Virtual Private Cloud)
