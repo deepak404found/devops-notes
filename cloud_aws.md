@@ -4913,7 +4913,7 @@ with table.batch_writer() as batch:
 
 **What is Lambda?** → Run code without managing servers. You just upload your code and AWS handles everything else.
 
-![AWS Lambda Architecture Overview](https://docs.aws.amazon.com/images/lambda/latest/dg/images/architecture.png)
+![AWS Lambda Architecture Overview](https://d2908q01vomqb2.cloudfront.net/1b6453892473a467d07372d45eb05abc2031647a/2021/01/07/eda1.png)
 
 *Figure: AWS Lambda Serverless Architecture - Event-driven execution model*
 
