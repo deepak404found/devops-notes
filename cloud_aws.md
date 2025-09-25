@@ -7898,6 +7898,8 @@ Elastic Load Balancing (ELB) automatically distributes incoming application traf
 
 **Best for**: High-performance applications, TCP/UDP traffic
 
+![Load Balancing Concept](./images/load-balancing-concept.jpg)
+
 **Features**:
 - **Ultra-high performance** (millions of requests per second)
 - **Static IP support** for each Availability Zone
@@ -7921,6 +7923,8 @@ Elastic Load Balancing (ELB) automatically distributes incoming application traf
 - **Third-party virtual appliances** integration
 - **GENEVE protocol** on port 6081
 - **Centralized deployment** of security appliances
+
+![Gateway Load Balancer Diagram](./images/gwlb-diagram.png)
 
 **Use Cases**:
 - Firewall appliances
