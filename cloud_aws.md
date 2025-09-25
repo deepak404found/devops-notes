@@ -19,54 +19,70 @@ This comprehensive guide covers everything from cloud computing fundamentals to 
 ### 🖥 Amazon EC2 (Elastic Compute Cloud)
 - [EC2 Instance Launch & Management](#-ec2-instance-launch--management)
 - [EC2 Pricing & Cost Management](#-ec2-pricing--cost-management)
+- [Prerequisites Before Starting](#-prerequisites-before-starting)
 - [Step-by-Step EC2 Launch Process](#-step-by-step-ec2-launch-process)
 - [Common Issues and Solutions](#-common-issues-and-solutions)
+- [Cost Monitoring](#-cost-monitoring)
+- [Next Steps After Launch](#-next-steps-after-launch)
+- [Additional Resources](#-additional-resources)
 
 ### 🔑 SSH Connection & Server Management
-- [SSH Setup for Different OS](#-ssh-setup-for-different-operating-systems)
-- [Step-by-Step SSH Connection](#-step-by-step-ssh-connection-process)
+- [SSH Setup for Different Operating Systems](#-ssh-setup-for-different-operating-systems)
+- [Step-by-Step SSH Connection Process](#-step-by-step-ssh-connection-process)
+- [Common SSH Connection Issues & Solutions](#-common-ssh-connection-issues--solutions)
 - [SSH Security Best Practices](#-ssh-security-best-practices)
 - [File Transfer with SSH](#-file-transfer-with-ssh)
 - [SSH Tips for Beginners](#-ssh-tips-for-beginners)
 
 ### 🕸 Web Server Setup (Nginx)
-- [Nginx Setup Guide](#-nginx-setup---complete-beginner-guide)
-- [Nginx Configuration](#-nginx-configuration-explained)
-- [Step-by-Step Nginx Setup](#-step-by-step-nginx-setup-for-django)
-- [SSL/HTTPS Setup](#-sslhttps-setup-with-lets-encrypt)
+- [How Nginx Works with Django](#-how-nginx-works-with-django)
+- [Installing Nginx on Different Systems](#-installing-nginx-on-different-systems)
+- [Nginx Configuration Explained](#-nginx-configuration-explained)
+- [Step-by-Step Nginx Setup for Django](#-step-by-step-nginx-setup-for-django)
+- [SSL/HTTPS Setup with Let's Encrypt](#-sslhttps-setup-with-lets-encrypt)
+- [Common Nginx Issues & Solutions](#-common-nginx-issues--solutions)
 - [Nginx Performance Optimization](#-nginx-performance-optimization)
+- [Nginx Logs and Monitoring](#-nginx-logs-and-monitoring)
 - [Nginx Best Practices](#-nginx-best-practices)
+- [Alternative Web Servers](#-alternative-web-servers)
 
 ### 🖥 Django Development
-- [Django Local Setup](#-django-local-setup-with-pip-beginner-friendly)
+- [Prerequisites (What You Need First)](#-prerequisites-what-you-need-first)
 - [Step-by-Step Django Setup](#-step-by-step-django-setup)
-- [IDE Setup for Windows](#-ide-setup-for-windows-users)
+- [IDE Setup for Windows Users](#-ide-setup-for-windows-users)
 - [Common Issues & Solutions](#-common-issues--solutions)
-- [Understanding Django Project Structure](#-understanding-your-django-project-structure)
+- [Understanding Your Django Project Structure](#-understanding-your-django-project-structure)
+- [Next Steps After Setup](#-next-steps-after-setup)
 
 ### 🌍 Networking & Cost Optimization
-- [Networking Basics](#-networking-basics-for-servers-complete-beginner-guide)
-- [AWS Cost Optimization](#-aws-cost-optimization-save-money)
+- [Networking Basics for Servers](#-networking-basics-for-servers-complete-beginner-guide)
 - [Cost Optimization Strategies](#-cost-optimization-strategies)
 - [Real-World Cost Examples](#-real-world-cost-examples)
 
 ### 🗄 AWS Storage Services
 - [Amazon S3 (Simple Storage Service)](#-amazon-s3-simple-storage-service)
-- [S3 Versioning](#-amazon-s3-versioning)
-- [Amazon CloudFront (CDN)](#-amazon-cloudfront-content-delivery-network)
-- [S3 vs CloudFront Relationship](#-s3-vs-cloudfront-and-their-relationship)
+- [Amazon CloudFront (Content Delivery Network)](#-amazon-cloudfront-content-delivery-network)
+- [S3 vs CloudFront and Their Relationship](#-s3-vs-cloudfront-and-their-relationship)
 - [Amazon EBS (Elastic Block Store)](#-amazon-ebs-elastic-block-store)
 
 ### 🗃 AWS Database Services
 - [Amazon RDS (Relational Database Service)](#-amazon-rds-relational-database-service)
-- [RDS Demo: Connect to Django](#-demo-connect-rds-postgresqlmysql-to-django-on-ec2)
+- [Demo Overview](#-demo-overview)
+- [Launch RDS Instance](#-1-launch-rds-instance)
+- [Update Security Groups](#-2-update-security-groups)
+- [Setup Django on EC2](#-3-setup-django-on-ec2)
+- [Create Sample Data Model](#-4-create-sample-data-model)
+- [Insert and Test Data](#-5-insert-and-test-data)
+- [CLI Commands to Test RDS Connection](#-cli-commands-to-test-rds-connection)
+- [Demo Verification Checklist](#-demo-verification-checklist)
+- [Next Steps](#-next-steps)
 - [RDS Read Replicas](#-rds-read-replicas---scaling-database-performance)
 - [Amazon DynamoDB (NoSQL Database)](#-amazon-dynamodb-nosql-database)
-- [DynamoDB vs RDS](#-dynamodb-vs-rds-network-setup-point-of-view)
+- [DynamoDB vs RDS (Network Setup Point of View)](#-dynamodb-vs-rds-network-setup-point-of-view)
 - [Amazon ElastiCache (In-Memory Caching)](#-amazon-elasticache-in-memory-caching)
 
 ### 🔒 AWS Security Best Practices
-- [IAM Deep Dive](#-identity-and-access-management-iam-deep-dive)
+- [Identity and Access Management (IAM) Deep Dive](#-identity-and-access-management-iam-deep-dive)
 - [Data Encryption](#-data-encryption)
 - [Security Monitoring](#-security-monitoring)
 
@@ -75,29 +91,34 @@ This comprehensive guide covers everything from cloud computing fundamentals to 
 - [AWS Elastic Beanstalk (Platform as a Service)](#-aws-elastic-beanstalk-platform-as-a-service)
 
 ### 📊 AWS Monitoring & Observability Services
-- [Amazon CloudWatch (Monitoring & Logging)](#-amazon-cloudwatch--detailed-explanation)
-- [CloudWatch Logs](#-cloudwatch-logs---detailed-explanation)
-- [CloudWatch Metrics](#-cloudwatch-metrics---detailed-explanation)
-- [CloudWatch Alarms](#-cloudwatch-alarms---detailed-explanation)
-- [CloudWatch Dashboards](#-cloudwatch-dashboards---detailed-explanation)
-- [CloudWatch Demo Projects](#-cloudwatch-demo-projects---step-by-step)
+- [Amazon CloudWatch – Detailed Explanation](#-amazon-cloudwatch--detailed-explanation)
+- [CloudWatch Logs - Detailed Explanation](#-cloudwatch-logs---detailed-explanation)
+- [CloudWatch Metrics - Detailed Explanation](#-cloudwatch-metrics---detailed-explanation)
+- [CloudWatch Alarms - Detailed Explanation](#-cloudwatch-alarms---detailed-explanation)
+- [CloudWatch Dashboards - Detailed Explanation](#-cloudwatch-dashboards---detailed-explanation)
+- [CloudWatch Demo Projects - Step by Step](#-cloudwatch-demo-projects---step-by-step)
+- [CloudWatch Pricing](#-cloudwatch-pricing)
+- [CloudWatch Best Practices](#-cloudwatch-best-practices)
+- [Real-Life Use Cases](#-real-life-use-cases)
+- [Troubleshooting Common Issues](#-troubleshooting-common-issues)
+- [Additional Resources](#-additional-resources)
 - [AWS CloudTrail (Audit & Logging)](#-aws-cloudtrail-audit--logging-detailed-explanation)
 
 ### 🌐 AWS Networking Services
 - [Amazon VPC (Virtual Private Cloud)](#-amazon-vpc-virtual-private-cloud)
-- [Amazon Route 53 (DNS Service)](#-amazon-route-53-dns-service)
+- [Amazon Route 53 (DNS Service)](#-amazon-route-53-dns-service---complete-guide)
+- [Elastic Load Balancing](#-what-is-elastic-load-balancing)
 
 ### 🛠 Hands-On Projects
-- [Hands-On Exercises and Projects](#-hands-on-exercises-and-projects)
 - [Beginner Projects](#-beginner-projects)
 - [Intermediate Projects](#-intermediate-projects)
 
 ### 📚 Learning Paths & Resources
-- [Beginner Learning Path](#-beginner-learning-path-0-3-months)
-- [Intermediate Learning Path](#-intermediate-learning-path-3-6-months)
-- [Advanced Learning Path](#-advanced-learning-path-6-months)
+- [Beginner Learning Path (0-3 months)](#-beginner-learning-path-0-3-months)
+- [Intermediate Learning Path (3-6 months)](#-intermediate-learning-path-3-6-months)
+- [Advanced Learning Path (6+ months)](#-advanced-learning-path-6-months)
 - [Troubleshooting Common Issues](#-troubleshooting-common-issues)
-- [Additional Resources](#-additional-resources-and-references)
+- [Additional Resources and References](#-additional-resources-and-references)
 
 ---
 
@@ -6883,21 +6904,848 @@ API Call → CloudTrail Service → Event Processing → S3 Bucket → CloudWatc
 - **Private Subnets:** For databases and internal services
 - **Public Subnets:** For load balancers and web servers
 - **NACLs:** Additional security layer (optional)
-## 🌍 Amazon Route 53 (DNS Service)
+## 🌍 Amazon Route 53 (DNS Service) - Complete Guide
 
-**What is Route 53?** → Reliable DNS service that routes users to internet applications.
+### What is Route 53?
 
-### Route 53 Features:
+**Amazon Route 53** is AWS's highly available and scalable Domain Name System (DNS) web service. It's designed to give developers and businesses a reliable way to route end users to Internet applications by translating names like `www.example.com` into numeric IP addresses like `192.0.2.1` that computers use to connect to each other.
 
-- **Domain Registration:** Buy and manage domains
-- **DNS Routing:** Route traffic to AWS resources
-- **Health Checks:** Monitor application health
-- **Traffic Policies:** Route based on location, latency
-### Route 53 Pricing:
+**Route 53 = DNS Service + Domain Registrar + Health Checks + Advanced Routing Policies**
 
-- **Hosted Zone:** $0.50 per month
-- **Queries:** $0.40 per million queries
-- **Health Checks:** $0.50 per health check per month
+### Why Use Route 53?
+
+- **Global DNS Resolution:** Route traffic to AWS resources worldwide
+- **High Availability:** 100% SLA uptime guarantee
+- **Integration:** Seamlessly works with all AWS services
+- **Advanced Routing:** Multiple routing policies for complex scenarios
+- **Health Monitoring:** Built-in health checks and failover capabilities
+- **Cost Effective:** Pay only for what you use
+
+### Key Concepts
+
+#### 1. Hosted Zones
+A **hosted zone** is a container for DNS records for a domain. There are two types:
+
+- **Public Hosted Zone**: Routes traffic from the internet
+- **Private Hosted Zone**: Routes traffic within VPCs (internal DNS)
+
+#### 2. DNS Record Types
+
+| Record Type | Purpose | Example |
+|-------------|---------|---------|
+| **A** | Maps domain to IPv4 address | `www.example.com → 192.0.2.1` |
+| **AAAA** | Maps domain to IPv6 address | `www.example.com → 2001:db8::1` |
+| **CNAME** | Canonical name (alias) | `blog.example.com → www.example.com` |
+| **ALIAS** | AWS-specific record pointing to AWS resources | `www.example.com → ALB-1234567890.us-east-1.elb.amazonaws.com` |
+| **MX** | Mail exchange records | `example.com → mail.example.com` |
+| **TXT** | Text records (verification, SPF, etc.) | `example.com → "v=spf1 include:_spf.google.com ~all"` |
+| **NS** | Name server records | `example.com → ns-123.awsdns-12.com` |
+
+#### 3. TTL (Time To Live)
+TTL determines how long DNS responses are cached by resolvers and browsers. Lower TTL = faster updates but more queries.
+
+### Route 53 Architecture
+
+![Route 53 Architecture Diagram](https://blog.kakaocdn.net/dna/bxQybc/btssYULtkMF/AAAAAAAAAAAAAAAAAAAAAI2Ax66K8FpZwQwExX76euKkNn2y2pEH5Xk2TdTHLuzT/img.png?credential=yqXZFxpELC7KVnFOS48ylbz2pIh7yKj8&expires=1759244399&allow_ip=&allow_referer=&signature=0wIkjox81hZqddCspYnuUp0atH4%3D)
+
+*This diagram illustrates how Amazon Route 53 routes traffic from various sources (Internet, Corporate Data Center, and Virtual Private Cloud) through Public and Private Hosted Zones to different AWS resources like CloudFront, EC2, and S3 within a VPC environment.*
+
+The following ASCII diagram shows how Route 53 works within an AWS VPC environment:
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                           VPC Boundary                          │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                 │
+│  Internet          Corporate DC          Virtual Private Cloud │
+│     │                    │                         │            │
+│     │                    │                         │            │
+│     ▼                    ▼                         ▼            │
+│  ┌─────────────┐    ┌─────────────┐    ┌─────────────────────┐  │
+│  │Public Hosted│    │             │    │Private Hosted Zone  │  │
+│  │    Zone     │    │             │    │                     │  │
+│  │             │    │             │    │                     │  │
+│  └─────────────┘    │             │    └─────────────────────┘  │
+│         │           │             │              │              │
+│         ▼           │             │              ▼              │
+│  ┌─────────────────────────────────────────────────────────────┐ │
+│  │              Amazon Route 53 (DNS Service)                 │ │
+│  │                    [🛡️ 53]                                 │ │
+│  └─────────────────────────────────────────────────────────────┘ │
+│         │           │             │              │              │
+│         ▼           ▼             ▼              ▼              │
+│  ┌─────────────┐ ┌─────────────┐ ┌─────────────────────────────┐ │
+│  │ CloudFront  │ │    EC2      │ │        S3 Bucket           │ │
+│  │   (CDN)     │ │  Instance   │ │      (Storage)             │ │
+│  └─────────────┘ └─────────────┘ └─────────────────────────────┘ │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+**How it works:**
+1. **Internet traffic** → **Public Hosted Zone** → **Route 53** → **AWS Resources**
+2. **Corporate DC** → **Route 53** → **AWS Resources** 
+3. **Internal VPC** → **Private Hosted Zone** → **Route 53** → **AWS Resources**
+
+### Routing Policies
+
+#### 1. Simple Routing
+- **Use Case**: Single resource, no special routing needs
+- **Example**: Point `www.example.com` to a single EC2 instance
+
+#### 2. Weighted Routing
+- **Use Case**: A/B testing, canary deployments, gradual rollouts
+- **Example**: 
+  - 90% traffic → Production server (weight: 90)
+  - 10% traffic → Testing server (weight: 10)
+
+#### 3. Latency-Based Routing
+- **Use Case**: Route users to the region with lowest latency
+- **Example**: 
+  - US East → `us-east-1.example.com`
+  - EU West → `eu-west-1.example.com`
+  - Asia Pacific → `ap-southeast-1.example.com`
+
+#### 4. Failover Routing
+- **Use Case**: Primary/Secondary setup with automatic failover
+- **Example**:
+  - Primary: `primary.example.com` (healthy)
+  - Secondary: `backup.example.com` (only used when primary fails)
+
+#### 5. Geolocation Routing
+- **Use Case**: Route based on user's geographic location
+- **Example**:
+  - North America → `na.example.com`
+  - Europe → `eu.example.com`
+  - Asia → `asia.example.com`
+
+#### 6. Geoproximity Routing
+- **Use Case**: Route based on geographic location with bias adjustment
+- **Example**: Route users to the closest data center, but allow bias for capacity
+
+#### 7. Multi-Value Answer Routing
+- **Use Case**: Return multiple healthy IPs (like basic load balancing)
+- **Example**: Return 3 healthy IPs for `api.example.com`
+
+### Health Checks
+
+Route 53 can monitor the health of your resources:
+
+#### Health Check Types:
+- **HTTP/HTTPS**: Check web endpoints
+- **TCP**: Check TCP connections
+- **CALCULATED**: Combine multiple health checks
+- **CLOUDWATCH ALARM**: Use CloudWatch metrics
+
+#### Health Check Configuration:
+```
+Health Check Settings:
+├── Protocol: HTTP/HTTPS/TCP
+├── Port: 80, 443, 8080, etc.
+├── Path: /health, /status, etc.
+├── Interval: 10, 30 seconds
+├── Failure Threshold: 3 failures
+└── Request Timeout: 4 seconds
+```
+
+### Domain Registration
+
+Route 53 can register new domains:
+- **Supported TLDs**: .com, .org, .net, .info, .biz, and many country codes
+- **Auto-renewal**: Automatic domain renewal
+- **Privacy Protection**: Hide WHOIS information
+- **DNS Management**: Automatic DNS configuration
+
+### Pricing Structure
+
+| Service | Cost |
+|---------|------|
+| **Hosted Zone** | $0.50/month per hosted zone |
+| **DNS Queries** | $0.40 per million queries |
+| **Health Checks** | $0.50/month per health check |
+| **Domain Registration** | Varies by TLD (.com ~$12/year) |
+| **ALIAS Queries** | Free for AWS resources |
+
+### Practical Examples
+
+#### Example 1: Basic Website Setup
+```bash
+# Domain: example.com
+# Goal: Point www.example.com to an ALB
+
+1. Create Public Hosted Zone for example.com
+2. Create A record (ALIAS):
+   - Name: www
+   - Type: A - IPv4 address
+   - Alias: Yes
+   - Alias Target: ALB-1234567890.us-east-1.elb.amazonaws.com
+   - Routing Policy: Simple
+```
+
+#### Example 2: Multi-Region Failover
+```bash
+# Domain: api.example.com
+# Goal: Primary in us-east-1, failover to eu-west-1
+
+1. Create two ALIAS records:
+   - Primary: api.example.com → us-east-1 ALB (Failover: Primary)
+   - Secondary: api.example.com → eu-west-1 ALB (Failover: Secondary)
+
+2. Create health checks for both ALBs
+3. Associate health checks with records
+```
+
+#### Example 3: A/B Testing with Weighted Routing
+```bash
+# Domain: app.example.com
+# Goal: 80% to version A, 20% to version B
+
+1. Create two ALIAS records:
+   - Version A: app.example.com → version-a-alb (Weight: 80)
+   - Version B: app.example.com → version-b-alb (Weight: 20)
+```
+
+### Step-by-Step Console Demo
+
+#### Demo: Setting Up Route 53 for a Website
+
+**Goal**: Configure Route 53 to route traffic to a CloudFront distribution
+
+##### Step 1: Create Hosted Zone
+1. **AWS Console** → **Route 53** → **Hosted zones**
+2. Click **"Create hosted zone"**
+3. **Domain name**: `example.com`
+4. **Type**: Public hosted zone
+5. Click **"Create hosted zone"**
+6. **Note the 4 NS records** (you'll need these for domain configuration)
+
+##### Step 2: Create DNS Records
+1. Click **"Create record"**
+2. **Record name**: `www`
+3. **Record type**: `A - IPv4 address`
+4. **Alias**: Toggle **ON**
+5. **Alias target**: Select your CloudFront distribution
+6. **Routing policy**: Simple
+7. Click **"Create records"**
+
+##### Step 3: Configure Domain (if using Route 53 as registrar)
+1. **Route 53** → **Registered domains**
+2. Click **"Register domain"**
+3. **Domain name**: `example.com`
+4. **Duration**: 1 year
+5. **Auto-renew**: Enable
+6. **Privacy protection**: Enable
+7. Complete registration process
+
+##### Step 4: Test DNS Resolution
+```bash
+# Test with dig command
+dig www.example.com
+
+# Test with nslookup
+nslookup www.example.com
+
+# Test in browser
+# Visit: https://www.example.com
+```
+
+### Best Practices
+
+#### 1. Use ALIAS Records for AWS Resources
+- **Why**: No additional charges for queries to AWS resources
+- **When**: Pointing to ALB, CloudFront, S3, etc.
+- **Example**: `www.example.com` → `ALB-1234567890.us-east-1.elb.amazonaws.com`
+
+#### 2. Implement Health Checks
+- **Monitor**: Critical endpoints
+- **Failover**: Automatic failover for high availability
+- **Alerting**: CloudWatch alarms for health check failures
+
+#### 3. Use Appropriate TTL Values
+- **Low TTL (60-300s)**: During deployments or changes
+- **High TTL (3600s+)**: Stable production environments
+- **Balance**: Between update speed and query costs
+
+#### 4. Multi-Region Setup
+- **Primary/Secondary**: Different AWS regions
+- **Health Checks**: Monitor both regions
+- **Failover**: Automatic failover for disaster recovery
+
+#### 5. Security Considerations
+- **Private Hosted Zones**: For internal services
+- **DNSSEC**: Enable for additional security
+- **Access Control**: Use IAM policies for Route 53 access
+
+### Common Use Cases
+
+#### 1. Production Website
+```bash
+# Architecture: CloudFront + ALB + EC2
+www.example.com (ALIAS) → CloudFront Distribution
+api.example.com (ALIAS) → Application Load Balancer
+```
+
+#### 2. Microservices Architecture
+```bash
+# Different services, different routing
+api.example.com (ALIAS) → API Gateway
+auth.example.com (ALIAS) → Cognito
+db.example.com (Private) → RDS Proxy
+```
+
+#### 3. Global Application
+```bash
+# Multi-region with latency-based routing
+app.example.com (Latency) → 
+  ├── us-east-1 ALB (US East)
+  ├── eu-west-1 ALB (Europe)  
+  └── ap-southeast-1 ALB (Asia)
+```
+
+#### 4. Development Environment
+```bash
+# Environment-specific subdomains
+dev.example.com (ALIAS) → Development ALB
+staging.example.com (ALIAS) → Staging ALB
+prod.example.com (ALIAS) → Production ALB
+```
+
+### Troubleshooting Route 53
+
+#### Common Issues and Solutions
+
+**Problem**: DNS not resolving
+- **Check**: NS records are correctly configured at domain registrar
+- **Verify**: TTL has expired (wait for propagation)
+- **Test**: Use `dig` or `nslookup` commands
+
+**Problem**: Health checks failing
+- **Check**: Security groups allow Route 53 IP ranges
+- **Verify**: Health check path is accessible
+- **Monitor**: CloudWatch metrics for health check status
+
+**Problem**: High costs
+- **Review**: Query volume and patterns
+- **Optimize**: Use ALIAS records for AWS resources
+- **Monitor**: CloudWatch metrics for query patterns
+
+### Integration with Other AWS Services
+
+#### CloudFront Integration
+- **ALIAS records** point to CloudFront distributions
+- **Global edge locations** for faster content delivery
+- **SSL/TLS termination** at CloudFront
+
+#### Load Balancer Integration
+- **ALB/NLB** as ALIAS targets
+- **Health checks** monitor load balancer health
+- **Cross-zone load balancing** for high availability
+
+#### VPC Integration
+- **Private hosted zones** for internal DNS
+- **VPC endpoints** for Route 53 API access
+- **Security groups** for health check access
+
+This comprehensive guide covers Route 53 from basic concepts to advanced configurations, providing you with everything needed to implement DNS solutions in AWS effectively.
+
+# ⚖️ Elastic Load Balancing (ELB) — Complete Guide
+
+## 🎯 What is Elastic Load Balancing?
+
+Elastic Load Balancing (ELB) automatically distributes incoming application traffic across multiple targets, such as EC2 instances, containers, IP addresses, and Lambda functions. It can handle the varying load of your application traffic in a single Availability Zone or across multiple Availability Zones.
+
+![ELB Traffic Distribution](./images/elb-traffic-distribution.gif)
+
+### 🚀 Why Use ELB?
+
+- **High Availability**: Distributes traffic across multiple targets
+- **Fault Tolerance**: Automatically routes traffic away from unhealthy targets
+- **Scalability**: Handles varying loads automatically
+- **SSL Termination**: Offloads SSL/TLS processing from your applications
+- **Security**: Provides a single point of entry with security group management
+- **Monitoring**: Integrated with CloudWatch for metrics and logging
+
+## 🔧 Types of Load Balancers
+
+### 1. Application Load Balancer (ALB) — Layer 7
+
+**Best for**: Web applications, microservices, container-based applications
+
+**Features**:
+- **Host-based routing**: `example.com` → Target Group A, `api.example.com` → Target Group B
+- **Path-based routing**: `/api/*` → Backend A, `/static/*` → Backend B
+- **WebSocket and HTTP/2** support
+- **Lambda integration** as targets
+- **Content-based routing** based on HTTP headers, HTTP method, query parameters, and source IP
+
+![ALB Path-Based Routing](./images/alb-path-routing.gif)
+
+**Use Cases**:
+- Web applications with microservices architecture
+- Container-based applications (ECS, EKS)
+- Serverless applications with Lambda
+- Applications requiring advanced routing rules
+
+### 2. Network Load Balancer (NLB) — Layer 4
+
+**Best for**: High-performance applications, TCP/UDP traffic
+
+**Features**:
+- **Ultra-high performance** (millions of requests per second)
+- **Static IP support** for each Availability Zone
+- **Preserves source IP** address
+- **Low latency** (sub-100ms)
+- **TCP/UDP/TLS** protocols
+
+**Use Cases**:
+- Gaming applications
+- IoT applications
+- High-frequency trading
+- Applications requiring static IP addresses
+- TCP/UDP-based applications
+
+### 3. Gateway Load Balancer (GWLB) — Layer 3
+
+**Best for**: Third-party virtual appliances
+
+**Features**:
+- **Transparent network gateway** (single entry/exit point)
+- **Third-party virtual appliances** integration
+- **GENEVE protocol** on port 6081
+- **Centralized deployment** of security appliances
+
+**Use Cases**:
+- Firewall appliances
+- Intrusion detection systems
+- Deep packet inspection
+- Network security appliances
+
+### 4. Classic Load Balancer (CLB) — Legacy
+
+**⚠️ Deprecated**: Avoid for new applications. Use ALB or NLB instead.
+
+## 🏗 Core Components
+
+### Load Balancer
+- **Frontend**: Receives incoming traffic
+- **Listeners**: Define how traffic is routed (port/protocol)
+- **Availability Zones**: Distributes across multiple AZs for high availability
+
+### Target Groups
+- **Logical grouping** of targets (EC2 instances, IPs, Lambda functions)
+- **Health checks** defined per target group
+- **Protocol and port** configuration
+- **Load balancing algorithm** (round robin, least outstanding requests)
+
+### Targets
+- **EC2 instances**: Most common target type
+- **IP addresses**: For targets outside AWS
+- **Lambda functions**: For ALB only
+- **Application Load Balancers**: For cross-region load balancing
+
+### Listeners and Rules
+- **Listeners**: Check for connection requests using protocol and port
+- **Rules**: Define how requests are routed to target groups
+- **Conditions**: Path patterns, host headers, HTTP methods, source IPs
+- **Actions**: Forward, redirect, return custom response
+
+## 🔒 Security Configuration
+
+### Security Groups
+
+**Load Balancer Security Group**:
+```bash
+# Allow HTTP traffic from internet
+Type: HTTP
+Port: 80
+Source: 0.0.0.0/0
+
+# Allow HTTPS traffic from internet
+Type: HTTPS
+Port: 443
+Source: 0.0.0.0/0
+```
+
+**Target Security Group**:
+```bash
+# Allow traffic from Load Balancer
+Type: Custom TCP
+Port: 80 (or your application port)
+Source: Load Balancer Security Group ID
+```
+
+### SSL/TLS Configuration
+- **SSL termination** at the load balancer
+- **ACM (AWS Certificate Manager)** integration
+- **TLS 1.2+** security policies
+- **Perfect Forward Secrecy** support
+
+## 🛠 Hands-On: Creating an Application Load Balancer
+
+### Prerequisites
+1. **Two EC2 instances** running web servers on port 80
+2. **Security groups** configured properly
+3. **VPC with multiple subnets** in different Availability Zones
+
+### Step-by-Step Setup
+
+#### 1. Prepare EC2 Instances
+
+**Launch two EC2 instances**:
+```bash
+# Instance 1: Web Server 1
+AMI: Amazon Linux 2
+Instance Type: t2.micro
+Security Group: Allow HTTP (80) from anywhere
+
+# Instance 2: Web Server 2
+AMI: Amazon Linux 2
+Instance Type: t2.micro
+Security Group: Allow HTTP (80) from anywhere
+```
+
+**Install and configure web servers**:
+```bash
+# On both instances
+sudo yum update -y
+sudo yum install -y httpd
+sudo systemctl start httpd
+sudo systemctl enable httpd
+
+# Create different content for each instance
+echo "<h1>Server 1 - Instance ID: $(curl -s http://169.254.169.254/latest/meta-data/instance-id)</h1>" | sudo tee /var/www/html/index.html
+```
+
+#### 2. Create Application Load Balancer
+
+**Console Steps**:
+1. **EC2 Console** → **Load Balancers** → **Create Load Balancer**
+2. **Choose Application Load Balancer**
+3. **Configure Load Balancer**:
+   - Name: `my-web-alb`
+   - Scheme: `Internet-facing`
+   - IP address type: `IPv4`
+   - Listeners: `HTTP:80`
+
+4. **Configure VPC and Subnets**:
+   - VPC: Select your VPC
+   - Subnets: Select at least 2 subnets in different AZs
+
+5. **Configure Security Group**:
+   - Create new security group
+   - Allow HTTP (80) from anywhere (0.0.0.0/0)
+
+6. **Configure Routing**:
+   - Target group name: `web-targets`
+   - Target type: `Instances`
+   - Protocol: `HTTP`
+   - Port: `80`
+   - Health check path: `/`
+
+7. **Register Targets**:
+   - Select your two EC2 instances
+   - Add to target group
+
+8. **Review and Create**
+
+#### 3. Test Load Balancing
+
+**Get ALB DNS name**:
+```bash
+# From AWS Console or CLI
+aws elbv2 describe-load-balancers --names my-web-alb --query 'LoadBalancers[0].DNSName'
+```
+
+**Test load balancing**:
+```bash
+# Open browser and navigate to ALB DNS name
+# Refresh multiple times to see different servers responding
+curl http://my-web-alb-1234567890.us-east-1.elb.amazonaws.com
+```
+
+### Advanced Configuration: Path-Based Routing
+
+#### Create Multiple Target Groups
+
+**Target Group 1 - Web Application**:
+```bash
+Name: web-app-targets
+Protocol: HTTP
+Port: 80
+Health check path: /
+```
+
+**Target Group 2 - API Application**:
+```bash
+Name: api-targets
+Protocol: HTTP
+Port: 8080
+Health check path: /health
+```
+
+#### Configure Listener Rules
+
+**Rule 1 - Web Traffic**:
+```bash
+Condition: Path is /web/*
+Action: Forward to web-app-targets
+Priority: 100
+```
+
+**Rule 2 - API Traffic**:
+```bash
+Condition: Path is /api/*
+Action: Forward to api-targets
+Priority: 200
+```
+
+**Default Rule**:
+```bash
+Action: Forward to web-app-targets
+Priority: 1000 (lowest priority)
+```
+
+## 🔐 Adding HTTPS with SSL Termination
+
+### Step 1: Request SSL Certificate
+
+**Using AWS Certificate Manager (ACM)**:
+1. **ACM Console** → **Request a certificate**
+2. **Domain name**: `www.example.com` (or your domain)
+3. **Validation method**: DNS validation (recommended)
+4. **Add to Route 53**: Automatically creates DNS records
+
+### Step 2: Configure HTTPS Listener
+
+**Add HTTPS Listener**:
+1. **Load Balancer** → **Listeners** → **Add listener**
+2. **Protocol**: HTTPS
+3. **Port**: 443
+4. **SSL Certificate**: Select from ACM
+5. **Security Policy**: ELBSecurityPolicy-TLS-1-2-2017-01
+6. **Default Action**: Forward to target group
+
+### Step 3: Update Route 53
+
+**Create ALIAS Record**:
+```bash
+# Route 53 Console
+Record name: www.example.com
+Record type: A
+Alias: Yes
+Alias target: my-web-alb-1234567890.us-east-1.elb.amazonaws.com
+```
+
+## 🔍 Health Checks and Monitoring
+
+### Health Check Configuration
+
+**Health Check Parameters**:
+```bash
+Protocol: HTTP
+Port: 80
+Path: /health (or /)
+Healthy threshold: 2
+Unhealthy threshold: 3
+Timeout: 5 seconds
+Interval: 30 seconds
+```
+
+**Health Check Response**:
+```bash
+# Your application should return HTTP 200 for health checks
+# Example health check endpoint
+@app.route('/health')
+def health_check():
+    return {'status': 'healthy'}, 200
+```
+
+### Deregistration and Draining
+
+**Deregistration Delay**:
+- **Default**: 300 seconds
+- **Purpose**: Allows in-flight requests to complete
+- **Configurable**: 0-3600 seconds
+- **Best Practice**: Set to 30-60 seconds for most applications
+
+### CloudWatch Metrics
+
+**Key Metrics to Monitor**:
+- **RequestCount**: Number of requests processed
+- **TargetResponseTime**: Time taken by targets to respond
+- **HTTPCode_Target_2XX_Count**: Successful responses
+- **HTTPCode_Target_4XX_Count**: Client errors
+- **HTTPCode_Target_5XX_Count**: Server errors
+- **HealthyHostCount**: Number of healthy targets
+- **UnHealthyHostCount**: Number of unhealthy targets
+
+## 🍪 Session Affinity (Sticky Sessions)
+
+### Load Balancer Generated Cookies
+
+**Configuration**:
+```bash
+Target Group → Attributes → Stickiness
+Stickiness type: Load balancer generated cookie
+Duration: 1 day (default)
+```
+
+**Cookie Name**: `AWSALB` (Application Load Balancer)
+**Cookie Value**: Encrypted target information
+
+### Application Generated Cookies
+
+**Configuration**:
+```bash
+Target Group → Attributes → Stickiness
+Stickiness type: Application generated cookie
+Cookie name: JSESSIONID (or your app's session cookie)
+Duration: 1 day
+```
+
+**Application Requirements**:
+- Must set the specified cookie name
+- Cookie must be present in subsequent requests
+- Application must handle session management
+
+## ⚡ Performance Optimization
+
+### Connection Settings
+
+**Keep-Alive Settings**:
+```bash
+Idle timeout: 60 seconds (default)
+Connection draining: Enabled
+Deregistration delay: 300 seconds
+```
+
+**Best Practices**:
+- **Idle timeout**: Set based on your application's keep-alive needs
+- **Connection draining**: Always enable for graceful shutdowns
+- **Deregistration delay**: Balance between quick failover and request completion
+
+### Cross-Zone Load Balancing
+
+**ALB**: Always enabled (no additional cost)
+**NLB**: Can be enabled (additional charges apply)
+
+**Benefits**:
+- Distributes traffic evenly across all AZs
+- Improves fault tolerance
+- Better resource utilization
+
+## 🚨 Troubleshooting Common Issues
+
+### Health Check Failures
+
+**Problem**: Targets showing as unhealthy
+**Solutions**:
+- **Check security groups**: Ensure targets allow traffic from ALB
+- **Verify health check path**: Must return HTTP 200
+- **Check application logs**: Look for errors in target applications
+- **Test manually**: Use `curl` to test health check endpoint
+
+### High Response Times
+
+**Problem**: Slow response times
+**Solutions**:
+- **Check target performance**: Monitor EC2 CPU and memory
+- **Review application logs**: Look for bottlenecks
+- **Consider scaling**: Add more targets or increase instance sizes
+- **Optimize health checks**: Reduce frequency if appropriate
+
+### SSL Certificate Issues
+
+**Problem**: HTTPS not working
+**Solutions**:
+- **Verify certificate**: Check ACM certificate status
+- **Check domain validation**: Ensure DNS records are correct
+- **Review security policy**: Use supported TLS versions
+- **Test with openssl**: `openssl s_client -connect your-alb.amazonaws.com:443`
+
+### Connection Timeouts
+
+**Problem**: Requests timing out
+**Solutions**:
+- **Increase idle timeout**: For long-running requests
+- **Check target health**: Ensure targets are responding
+- **Review security groups**: Verify all required ports are open
+- **Monitor CloudWatch**: Look for error patterns
+
+## 🔗 Integration with Other AWS Services
+
+### Auto Scaling Integration
+
+**Target Tracking Scaling**:
+```bash
+# CloudFormation example
+TargetValue: 70.0
+PredefinedMetricSpecification:
+  PredefinedMetricType: ALBRequestCountPerTarget
+  ResourceLabel: app/my-web-alb/50dc6c495c0c9188/fb395ab0c5c22b52/targetgroup/web-targets/943f017f100becff
+```
+
+### ECS/EKS Integration
+
+**ECS Service with ALB**:
+```bash
+# ECS Task Definition
+LoadBalancers:
+  - ContainerName: web-app
+    ContainerPort: 80
+    TargetGroupArn: arn:aws:elasticloadbalancing:region:account:targetgroup/web-targets/1234567890123456
+```
+
+### Lambda Integration
+
+**ALB with Lambda Targets**:
+```bash
+# Lambda function as ALB target
+Target Group Type: Lambda
+Lambda Function: my-web-function
+Lambda Version: $LATEST
+```
+
+## 📊 Cost Optimization
+
+### ALB Pricing
+- **Fixed cost**: ~$16.20/month per ALB
+- **LCU charges**: Based on usage (requests, connections, data processed)
+- **Free tier**: 750 hours/month for first 12 months
+
+### Cost Optimization Tips
+- **Consolidate ALBs**: Use path-based routing instead of multiple ALBs
+- **Optimize health checks**: Reduce frequency for non-critical applications
+- **Use NLB for high-throughput**: Lower cost for TCP/UDP traffic
+- **Monitor usage**: Use CloudWatch to track LCU consumption
+
+## 🎯 Best Practices
+
+### Security
+- **Use HTTPS**: Always enable SSL/TLS termination
+- **Security groups**: Follow principle of least privilege
+- **WAF integration**: Use AWS WAF for additional protection
+- **Private subnets**: Place targets in private subnets when possible
+
+### Performance
+- **Health checks**: Optimize frequency and timeout values
+- **Connection draining**: Always enable for graceful shutdowns
+- **Cross-zone load balancing**: Enable for better distribution
+- **Monitoring**: Set up CloudWatch alarms for key metrics
+
+### Reliability
+- **Multiple AZs**: Always use at least 2 Availability Zones
+- **Auto Scaling**: Integrate with Auto Scaling Groups
+- **Backup targets**: Maintain healthy target capacity
+- **Disaster recovery**: Plan for multi-region deployment
+
+### Cost Management
+- **Right-size ALBs**: Choose appropriate load balancer type
+- **Monitor usage**: Track LCU consumption
+- **Consolidate resources**: Use path-based routing
+- **Review regularly**: Audit ALB usage and costs
+
+This comprehensive guide covers Elastic Load Balancing from basic concepts to advanced configurations, providing you with everything needed to implement robust, scalable load balancing solutions in AWS.
+
 # 🛠 Hands-On Exercises and Projects
 
 ## 🎯 Beginner Projects
