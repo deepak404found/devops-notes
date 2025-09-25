@@ -90,6 +90,9 @@ This comprehensive guide covers everything from cloud computing fundamentals to 
 - [AWS Lambda (Serverless Computing)](#-aws-lambda-serverless-computing---complete-guide)
 - [AWS Elastic Beanstalk (Platform as a Service)](#-aws-elastic-beanstalk-platform-as-a-service)
 
+### 🏗 AWS Infrastructure as Code
+- [AWS CloudFormation — Infrastructure as Code (IaC)](#-aws-cloudformation--infrastructure-as-code-iac)
+
 ### 📊 AWS Monitoring & Observability Services
 - [Amazon CloudWatch – Detailed Explanation](#-amazon-cloudwatch--detailed-explanation)
 - [CloudWatch Logs - Detailed Explanation](#-cloudwatch-logs---detailed-explanation)
@@ -5560,6 +5563,612 @@ Use Test → Configure test event in Lambda to paste the JSON and run the functi
 - **EC2:** Lower level, more control
 - **Elastic Beanstalk:** Faster to deploy
 - **EC2:** More customization options
+
+## 🏗 AWS CloudFormation — Infrastructure as Code (IaC)
+
+![CloudFormation Pipeline](images/cloudformation-pipeline.png)
+
+*Figure: AWS CodePipeline and CloudFormation working together to provision AWS resources*
+
+### What is CloudFormation?
+
+**CloudFormation** is AWS's Infrastructure as Code (IaC) service that lets you define your entire AWS infrastructure using code (JSON or YAML templates) instead of clicking through the AWS console.
+
+**Think of it like this:** Instead of manually building a house brick by brick, you write a blueprint (template) and AWS builds the entire house automatically.
+
+### Why Use CloudFormation?
+
+#### 🎯 **Repeatability**
+- Deploy the same infrastructure across different environments (dev, staging, prod)
+- No more "it works on my machine" problems
+
+#### 📝 **Version Control**
+- Store your infrastructure code in Git
+- Track changes over time
+- Rollback to previous versions if needed
+
+#### 🗑️ **Automatic Cleanup**
+- Delete entire infrastructure with one command
+- No forgotten resources = no surprise bills
+
+#### 🔗 **Dependency Management**
+- AWS automatically handles resource creation order
+- No more manual dependency tracking
+
+#### 🛡️ **Consistency**
+- Same infrastructure every time
+- Reduces human errors
+
+### CloudFormation Template Structure
+
+A CloudFormation template has several key sections:
+
+```yaml
+AWSTemplateFormatVersion: '2010-09-09'  # Optional: template version
+Description: 'My awesome infrastructure'  # Optional: what this template does
+
+Parameters:  # Optional: values provided at deploy time
+  InstanceType:
+    Type: String
+    Default: t3.micro
+    Description: EC2 instance type
+
+Mappings:  # Optional: static mappings
+  RegionMap:
+    us-east-1:
+      AMI: ami-0c02fb55956c7d316
+
+Resources:  # Required: the actual AWS resources
+  MyEC2Instance:
+    Type: AWS::EC2::Instance
+    Properties:
+      InstanceType: !Ref InstanceType
+      ImageId: !FindInMap [RegionMap, !Ref 'AWS::Region', AMI]
+
+Outputs:  # Optional: values returned after creation
+  InstanceId:
+    Value: !Ref MyEC2Instance
+    Description: ID of the EC2 instance
+
+Conditions:  # Optional: conditional resource creation
+  CreateProdResources: !Equals [!Ref Environment, 'prod']
+
+Transform:  # Optional: for SAM or other transforms
+  - AWS::Serverless-2016-10-31
+```
+
+### Key CloudFormation Concepts
+
+#### 📦 **Stack**
+A collection of AWS resources created and managed as a single unit.
+
+**Example:** Your web application stack might include:
+- EC2 instances
+- RDS database
+- S3 bucket
+- Security groups
+- Load balancer
+
+#### 🔄 **Change Sets**
+Preview changes before applying them to your stack.
+
+**Benefits:**
+- See exactly what will be added/modified/deleted
+- Review changes before execution
+- Safer updates
+
+#### ↩️ **Rollback**
+If stack creation/update fails, CloudFormation automatically rolls back to the previous state.
+
+**Example:** If creating 5 EC2 instances fails at instance #3, CloudFormation deletes instances #1 and #2 automatically.
+
+#### 🛡️ **Stack Policies**
+Protect critical resources from accidental updates or deletions.
+
+**Example:** Protect your production database from being accidentally deleted.
+
+#### 🔑 **Capabilities**
+Required when creating IAM resources:
+
+- `CAPABILITY_IAM`: For IAM roles and policies
+- `CAPABILITY_NAMED_IAM`: For IAM resources with custom names
+- `CAPABILITY_AUTO_EXPAND`: For macros and transforms
+
+### CloudFormation Intrinsic Functions
+
+These are special functions you can use in templates:
+
+#### `!Ref`
+References another resource or parameter:
+
+```yaml
+MyInstance:
+  Type: AWS::EC2::Instance
+  Properties:
+    SecurityGroupIds:
+      - !Ref MySecurityGroup  # Reference the security group
+```
+
+#### `!GetAtt`
+Gets attributes from resources:
+
+```yaml
+Outputs:
+  InstancePublicIP:
+    Value: !GetAtt MyInstance.PublicIp
+    Description: Public IP of the instance
+```
+
+#### `!Sub`
+String substitution with variables:
+
+```yaml
+BucketName: !Sub 'my-bucket-${AWS::AccountId}-${AWS::Region}'
+# Results in: my-bucket-123456789012-us-east-1
+```
+
+#### `!Join`
+Joins strings with a delimiter:
+
+```yaml
+BucketName: !Join ['-', ['my', 'bucket', !Ref AWS::AccountId]]
+# Results in: my-bucket-123456789012
+```
+
+#### `!FindInMap`
+Looks up values in Mappings:
+
+```yaml
+Mappings:
+  RegionMap:
+    us-east-1:
+      AMI: ami-0c02fb55956c7d316
+    us-west-2:
+      AMI: ami-0c02fb55956c7d316
+
+Resources:
+  MyInstance:
+    Type: AWS::EC2::Instance
+    Properties:
+      ImageId: !FindInMap [RegionMap, !Ref 'AWS::Region', AMI]
+```
+
+### Complete Example: S3 Bucket + DynamoDB Table
+
+Let's create a comprehensive example that demonstrates CloudFormation best practices:
+
+```yaml
+AWSTemplateFormatVersion: '2010-09-09'
+Description: 'Demo stack - S3 bucket + DynamoDB table with proper configuration'
+
+Parameters:
+  EnvName:
+    Type: String
+    Default: dev
+    Description: Environment name for resource naming
+    AllowedValues: [dev, staging, prod]
+    ConstraintDescription: Must be dev, staging, or prod
+
+  BucketNamePrefix:
+    Type: String
+    Default: demo-bucket
+    Description: Prefix for S3 bucket name
+    MinLength: 3
+    MaxLength: 20
+
+Mappings:
+  EnvironmentMap:
+    dev:
+      DeletionPolicy: Delete
+      BackupRetention: 1
+    staging:
+      DeletionPolicy: Retain
+      BackupRetention: 7
+    prod:
+      DeletionPolicy: Retain
+      BackupRetention: 30
+
+Conditions:
+  IsProd: !Equals [!Ref EnvName, 'prod']
+  IsDev: !Equals [!Ref EnvName, 'dev']
+
+Resources:
+  # S3 Bucket with versioning and lifecycle rules
+  DemoBucket:
+    Type: AWS::S3::Bucket
+    DeletionPolicy: !FindInMap [EnvironmentMap, !Ref EnvName, DeletionPolicy]
+    Properties:
+      BucketName: !Sub '${BucketNamePrefix}-${EnvName}-${AWS::AccountId}'
+      VersioningConfiguration:
+        Status: Enabled
+      LifecycleConfiguration:
+        Rules:
+          - Id: DeleteOldVersions
+            Status: Enabled
+            NoncurrentVersionExpiration:
+              NoncurrentDays: 30
+          - Id: DeleteIncompleteMultipartUploads
+            Status: Enabled
+            AbortIncompleteMultipartUpload:
+              DaysAfterInitiation: 7
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+      Tags:
+        - Key: Environment
+          Value: !Ref EnvName
+        - Key: Project
+          Value: CloudFormationDemo
+
+  # DynamoDB Table with proper configuration
+  DemoTable:
+    Type: AWS::DynamoDB::Table
+    DeletionPolicy: !FindInMap [EnvironmentMap, !Ref EnvName, DeletionPolicy]
+    Properties:
+      TableName: !Sub 'demo-table-${EnvName}'
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+        - AttributeName: timestamp
+          AttributeType: S
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+        - AttributeName: timestamp
+          KeyType: RANGE
+      BillingMode: PAY_PER_REQUEST
+      PointInTimeRecoverySpecification:
+        PointInTimeRecoveryEnabled: !If [IsProd, true, false]
+      Tags:
+        - Key: Environment
+          Value: !Ref EnvName
+        - Key: Project
+          Value: CloudFormationDemo
+
+  # IAM Role for Lambda (if needed)
+  LambdaExecutionRole:
+    Type: AWS::IAM::Role
+    Condition: IsDev  # Only create in dev environment
+    Properties:
+      RoleName: !Sub 'lambda-execution-role-${EnvName}'
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+      Policies:
+        - PolicyName: S3Access
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - s3:GetObject
+                  - s3:PutObject
+                Resource: !Sub '${DemoBucket}/*'
+
+Outputs:
+  BucketName:
+    Value: !Ref DemoBucket
+    Description: Name of the created S3 bucket
+    Export:
+      Name: !Sub 'DemoBucketName-${EnvName}'
+  
+  BucketArn:
+    Value: !GetAtt DemoBucket.Arn
+    Description: ARN of the created S3 bucket
+  
+  TableName:
+    Value: !Ref DemoTable
+    Description: Name of the created DynamoDB table
+    Export:
+      Name: !Sub 'DemoTableName-${EnvName}'
+  
+  TableArn:
+    Value: !GetAtt DemoTable.Arn
+    Description: ARN of the created DynamoDB table
+  
+  LambdaRoleArn:
+    Value: !If [IsDev, !GetAtt LambdaExecutionRole.Arn, 'Not created in this environment']
+    Description: ARN of the Lambda execution role (dev only)
+```
+
+### Step-by-Step Deployment Demo
+
+#### 1. **Prepare Your Template**
+Save the above template as `demo-stack.yaml`
+
+#### 2. **Deploy via AWS Console**
+1. Go to **CloudFormation** in AWS Console
+2. Click **Create stack** → **With new resources (standard)**
+3. Choose **Upload a template file**
+4. Select your `demo-stack.yaml` file
+5. Click **Next**
+
+#### 3. **Configure Stack Parameters**
+- **Stack name:** `demo-stack-dev`
+- **EnvName:** `dev`
+- **BucketNamePrefix:** `my-demo-bucket`
+- Click **Next**
+
+#### 4. **Configure Stack Options**
+- **Capabilities:** Check `CAPABILITY_IAM` (since we're creating IAM roles)
+- Click **Next**
+
+#### 5. **Review and Create**
+- Review all settings
+- Click **Create stack**
+
+#### 6. **Monitor Progress**
+Watch the **Events** tab to see resources being created:
+- `CREATE_IN_PROGRESS` → `CREATE_COMPLETE`
+- Resources are created in dependency order
+
+#### 7. **View Outputs**
+After successful creation, go to **Outputs** tab to see:
+- Bucket name
+- Table name
+- ARNs
+
+#### 8. **Test Your Resources**
+```bash
+# List S3 buckets
+aws s3 ls
+
+# List DynamoDB tables
+aws dynamodb list-tables
+
+# Put an object in S3
+aws s3 cp test.txt s3://your-bucket-name/
+```
+
+### Updating Stacks with Change Sets
+
+#### 1. **Modify Your Template**
+Add a lifecycle rule to the S3 bucket:
+
+```yaml
+LifecycleConfiguration:
+  Rules:
+    - Id: DeleteOldVersions
+      Status: Enabled
+      NoncurrentVersionExpiration:
+        NoncurrentDays: 30
+    - Id: TransitionToIA  # NEW RULE
+      Status: Enabled
+      Transitions:
+        - StorageClass: STANDARD_IA
+          TransitionInDays: 30
+```
+
+#### 2. **Create Change Set**
+1. Select your stack
+2. Click **Create change set**
+3. Choose **Replace current template**
+4. Upload modified template
+5. Click **Next** → **Create change set**
+
+#### 3. **Review Changes**
+The change set shows:
+- **Add:** New lifecycle rule
+- **Modify:** Updated S3 bucket configuration
+- **No changes:** DynamoDB table (unchanged)
+
+#### 4. **Execute Change Set**
+- Review the changes
+- Click **Execute** to apply changes
+
+### Advanced CloudFormation Topics
+
+#### 🏗️ **Nested Stacks**
+Break large templates into smaller, reusable components:
+
+```yaml
+Resources:
+  DatabaseStack:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: https://s3.amazonaws.com/my-templates/database.yaml
+      Parameters:
+        Environment: !Ref EnvName
+```
+
+#### 🌍 **StackSets**
+Deploy the same stack across multiple AWS accounts and regions:
+
+**Use cases:**
+- Multi-account organizations
+- Compliance requirements
+- Centralized management
+
+#### 🔍 **Drift Detection**
+Detect when resources are modified outside of CloudFormation:
+
+1. Go to your stack
+2. Click **Detect drift**
+3. Review drifted resources
+4. Choose to import changes or revert
+
+#### 📊 **Custom Resources**
+Extend CloudFormation with Lambda functions for resources not natively supported:
+
+```yaml
+CustomResource:
+  Type: Custom::MyCustomResource
+  Properties:
+    ServiceToken: !GetAtt CustomResourceLambda.Arn
+    CustomProperty: 'custom-value'
+```
+
+### CloudFormation Best Practices
+
+#### 📝 **Template Organization**
+- Use parameters for environment-specific values
+- Use mappings for static configurations
+- Use conditions for optional resources
+- Use outputs for cross-stack references
+
+#### 🏷️ **Tagging Strategy**
+Always tag your resources:
+
+```yaml
+Tags:
+  - Key: Environment
+    Value: !Ref EnvName
+  - Key: Project
+    Value: !Ref ProjectName
+  - Key: Owner
+    Value: !Ref OwnerEmail
+```
+
+#### 🔒 **Security**
+- Use least privilege IAM policies
+- Enable encryption where possible
+- Use VPC endpoints for private communication
+- Regularly review and update templates
+
+#### 💰 **Cost Management**
+- Use appropriate instance types
+- Enable auto-scaling
+- Set up billing alerts
+- Regular cleanup of unused resources
+
+#### 📚 **Documentation**
+- Add descriptions to all parameters and outputs
+- Use meaningful resource names
+- Document complex logic in comments
+- Maintain a template changelog
+
+### Common CloudFormation Issues & Solutions
+
+#### ❌ **Stack Creation Fails**
+
+**Problem:** Resources fail to create
+**Solutions:**
+- Check IAM permissions
+- Verify resource limits
+- Review CloudFormation events for specific errors
+- Use smaller templates for initial testing
+
+#### ❌ **Circular Dependencies**
+
+**Problem:** Resources depend on each other
+**Solutions:**
+- Use `DependsOn` attribute
+- Restructure template logic
+- Use separate stacks for dependent resources
+
+#### ❌ **Template Too Large**
+
+**Problem:** Template exceeds CloudFormation limits
+**Solutions:**
+- Use nested stacks
+- Move large data to S3
+- Use transforms for repetitive code
+
+#### ❌ **Resource Already Exists**
+
+**Problem:** Resources with same names exist
+**Solutions:**
+- Use unique naming conventions
+- Include account ID and region in names
+- Use parameters for environment-specific naming
+
+### CloudFormation vs Other IaC Tools
+
+| Feature | CloudFormation | Terraform | CDK |
+|---------|----------------|-----------|-----|
+| **Language** | JSON/YAML | HCL | TypeScript/Python/Java |
+| **Provider** | AWS only | Multi-cloud | AWS only |
+| **State Management** | AWS managed | Local/Remote | AWS managed |
+| **Learning Curve** | Medium | Medium | High |
+| **Community** | Large | Very large | Growing |
+
+### Real-World Use Cases
+
+#### 🏢 **Enterprise Application**
+- Multi-tier web application
+- Auto-scaling groups
+- Load balancers
+- RDS with read replicas
+- CloudFront distribution
+
+#### 🔬 **Development Environment**
+- Quick environment provisioning
+- Consistent dev/staging/prod
+- Easy cleanup after testing
+- Cost-effective resource management
+
+#### 🚀 **Microservices Architecture**
+- Multiple Lambda functions
+- API Gateway
+- DynamoDB tables
+- S3 buckets for each service
+- VPC with private subnets
+
+### Next Steps After Learning CloudFormation
+
+1. **Practice with Real Projects**
+   - Start with simple templates
+   - Gradually add complexity
+   - Use version control for templates
+
+2. **Learn Related Services**
+   - AWS SAM (Serverless Application Model)
+   - AWS CDK (Cloud Development Kit)
+   - AWS CodePipeline integration
+
+3. **Advanced Topics**
+   - Custom resources
+   - Macros and transforms
+   - Stack policies
+   - Drift detection
+
+4. **Certification Path**
+   - AWS Solutions Architect Associate
+   - AWS DevOps Engineer Professional
+
+### CloudFormation Pricing
+
+**Good news:** CloudFormation itself is **FREE**! You only pay for the AWS resources you create.
+
+**What's included:**
+- Template processing
+- Stack management
+- Change sets
+- Drift detection
+
+**What you pay for:**
+- The actual AWS resources (EC2, RDS, S3, etc.)
+- Data transfer costs
+- Storage costs
+
+### Summary
+
+CloudFormation is AWS's powerful Infrastructure as Code service that allows you to:
+
+✅ **Define infrastructure as code** (JSON/YAML templates)
+✅ **Deploy consistently** across environments
+✅ **Manage dependencies** automatically
+✅ **Rollback on failures** for safety
+✅ **Version control** your infrastructure
+✅ **Scale efficiently** with reusable templates
+
+**Key takeaways:**
+- Start simple with basic templates
+- Use parameters for flexibility
+- Always test in dev environment first
+- Monitor costs and clean up unused resources
+- Keep templates in version control
+
+CloudFormation is essential for any serious AWS deployment and is a must-know skill for AWS Solutions Architects and DevOps Engineers.
+
 # 📊 Amazon CloudWatch (Monitoring & Logging) - Detailed Guide
 
 ## 📌 Amazon CloudWatch – Detailed Explanation
